@@ -14,23 +14,35 @@ print(datetime.datetime.now().strftime("%A %b %w %H:%M:%S - %d.%m.%Y"))
 #Daten aus Datei laden
 def get_data():
     #Reader zum Öffnen der CSV Datei
-    with open("C:/Users/kairu/OneDrive/7.Semester/Abschlussprojekt/rbl.csv") as csv_file:
-        reader = csv.reader(csv_file, delimiter=';')
-        header_row = next(reader)
-        buchung = []
+    valid = False
+    pfad = "BspListe.csv" # macht wenig Sinn den Pfad hier stehen zu haben
+    while not valid:
+        try:
+            with open(pfad) as csv_file:
+                reader = csv.reader(csv_file, delimiter=';')
+                #header_row = next(reader)
+                data = []
 
-        #Schleife zum Einlesen der Daten
-        for row in reader:
-            buchung.append(row)
-        #print(buchung)
-        #zurückgeben von Buchung
-        return buchung
+                    #Schleife zum Einlesen der Daten
+                for row in reader:
+                    data.append(row)
+                #print(buchung)
+                #zurückgeben von Buchung
+                print("mist")
+
+            return data
+        except:
+            print("Datei nicht gefunden!\n")
+            print("Bisheriger Pfad:", pfad)
+            pfad = input("Bitte geben sie einen gültigen Pfad ein:")
+
 
 #Eingabe neuer Daten
-def input_data():
+def input_data(data):
 
-    quest = "nein"
     while True:
+        #Vergabe ID
+        id = 2
         #Eingabe Raum
         raum = input("Wählen Sie einen Raum")
 
@@ -39,35 +51,45 @@ def input_data():
         mm = input("Geben Sie den Monat ein:")
         jj = input("Geben Sie das Jahr ein:")
         datum = date(int(jj), int(mm), int(dd)) 
+        tag = datum.strftime("%A")
+
         print(datum.strftime("%d.%m.%Y")) #Kalenderdatum mit bestimmten Format ausgeben
         print(datum.strftime("%A")) #Wochentag des Datums ausgeben
 
-        """
+        
         #Start und Endzeit eingeben
         starth = input("Geben Sie die Startstunde an:")
         startm = input("Geben Sie die Startminuten an:")
-        startt = time(int(startm, int(startm)))
-        print(startt)
-        """
+        #startt = time(int(startm), int(startm))
+        start = 20
+        #print(startt)
 
-        if quest == "nein":
-            1#Gleiche Angaben
-            #person = input("Geben Sie den Verantwortlichen an:") 
-            #produktion = input("Geben Sie die Produktion an:")  # dropdown liste
-            #nutzung = input("Geben Sie die Nutzungsart an:")    #dropdown list
-            #status = input("Geben Sie den Status an:")
+        endt = 22
+
+        
+        #Gleiche Angaben
+        person = input("Geben Sie den Verantwortlichen an:") 
+        produktion = input("Geben Sie die Produktion an:")  # dropdown liste
+        nutzung = input("Geben Sie die Nutzungsart an:")    #dropdown list
+        status = input("Geben Sie den Status an:")  #dropdown list
 
 
+        buchungtemp =[id, raum, tag, datum, start, endt, person, produktion, nutzung, status]
+        data.append(buchungtemp)
+        print(data)
         quest = input ("Sie wollen Sie eine Mehrfacheingabe starten?: [ja] [nein]")
 
         #Speicherung der Daten in CSV Datei
-        with open('C:/Users/kairu/OneDrive/7.Semester/Abschlussprojekt/rbl.csv', mode='w') as csv_file:
-            fieldnames = ['ID', 'Raum', 'Wochentag', 'Datum', 'Start', 'Ende', 'Verantwortliche', 'Produktion', 'Nutzungsart','Status']
-            writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter=';')
+        save_data(data)
 
-            writer.writerow({'ID': '2', 'Raum': raum, 'Wochentag': datum.strftime("%A"), 'Datum': datum, 'Start': '20:00', 'Ende': '22:00', 'Verantwortliche': 'Kai Loening', 'Produktion': 'Erlenkoenig', 'Nutzungsart': 'Probe', 'Status': 'bestaetigt'})
-            #immer mit ';' trennen, um einzelne Kästchen zu beschreiben
         break
+
+#Daten speichern
+
+def save_data(data):
+    with open('BspListe.csv', mode='w', newline='') as csv_file:
+            writer = csv.writer(csv_file, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+            writer.writerows(data)
 
 #def check_data():
 
@@ -80,29 +102,51 @@ def view_data():
 
 def search_data():
 
-    buchung = get_data()
+    data = get_data()
+    print (data)
     while True:
-        auswahl1 = input("Nach was wollen sie suchen? \n[1] Verantwortlichen \n[a]abbrechen\n")
+        auswahl1 = input("Nach was wollen sie suchen? \n[1] Allgemeine Suche \n[a]abbrechen\n")
 
-        #Suche nach Verantwortlichen
+        #Allgemeine Suche
         if auswahl1 == "1":
-            name = input("Geben Sie den Namen des Verantwortlichen ein:")
+            search = input("Geben Sie einen Suchbegriff ein:")
             i = 0
             liste = [] #Liste der gefunden passenden Buchungen
-            while i < len(buchung): #Beginn Suchalgorythmus
-                if buchung[i][6] == name:
-                    liste.append(buchung[i])
+            while i < len(data): #Beginn Suchalgorythmus
+                j=0
+                while j < 9:
+                    if data[i][j] == search:
+                        print(data[i][j])
+                        liste.append(data[i])
+                    j = j +1
                 i = i+1
-            for l in liste: #Zeilenweise ausgabe der gefundenen Daten
-                print(l)
+            if not liste:
+                print("keine Treffer!")
+                return
+            
 
+            #Zeilenweise ausgabe der gefundenen Daten    
+            for l in liste: 
+                print(l)
+            return 
             #Anfrage für Löschung des Daten
 
-    
         if auswahl1 == "a":
             break
 
-#def delete_data():
+#löschen von daten
+def delete_data(data):
+    search_data()
+    delete = input("Geben Sie die ID zum Löschen der Buchung ein:\n")
+    i = 0
+    j = len(data)
+    while i < j:
+        if data[i][0] == delete:
+            data.remove(data[i])
+            print("Daten gelöscht!")
+            break
+        i = i+1
+    save_data(data)
 
 #def archive_data():
 
@@ -114,16 +158,23 @@ def search_data():
 
 
 #Programmablauf
+ 
+#Datei einlesen
+
+buchung = get_data()
+
 while True: 
-    auswahl = input("Wählen Sie eine Option: \n[1] neue Buchung(en) \n[2] Anzeige der Buchungsliste \n[4] Suche nach Daten \n[a] Abbrechen\n")
+    auswahl = input("Wählen Sie eine Option: \n[1] neue Buchung(en) \n[2] Anzeige der Buchungsliste \n[4] Suche nach Daten \n[5] Löschen von Daten \n[a] Abbrechen\n")
     if auswahl == "1":
-        input_data()
+        input_data(buchung)
     if auswahl == "2":
         view_data()
     if auswahl == "3":
-        get_data()
+        buchung = get_data()
     if auswahl == "4":
         search_data()
+    if auswahl == "5":
+        delete_data(buchung)
     if auswahl == "a":
         break
-    print("hallo")
+

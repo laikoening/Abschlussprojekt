@@ -21,3 +21,24 @@
         #Zugriff auf mehrdimensionales Array
         #print (buchungen[0:9,0])
     
+#Kalender anzeigen lassen
+    
+import calendar
+kalenderblatt = calendar.TextCalendar(calendar.MONDAY)
+ausgabe = kalenderblatt.formatmonth(2021,1)
+print(ausgabe)
+
+#datei beschreiben
+"""
+        with open('C:/Users/kairu/OneDrive/7.Semester/Abschlussprojekt/rbl.csv', mode='w') as csv_file:
+            #fieldnames = ['ID', 'Raum', 'Wochentag', 'Datum', 'Start', 'Ende', 'Verantwortliche', 'Produktion', 'Nutzungsart','Status']
+            writer = csv.writer( delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+            #for i in buchung:
+            writer.writerows(buchung)
+        """
+        """
+        writer = csv.writer(open('C:/Users/kairu/OneDrive/7.Semester/Abschlussprojekt/rbl.csv', mode='w', delimiter = ";"))
+        #writer.writerow(['ID', 'Raum', 'Wochentag', 'Datum', 'Start', 'Ende', 'Verantwortliche', 'Produktion', 'Nutzungsart','Status'])
+        writer.writerows(buchung)
+        """
