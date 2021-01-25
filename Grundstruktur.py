@@ -1,45 +1,52 @@
 #Das soll das Grundkonzept werden
 
-#IMPORTS
+# ------- IMPORTS -------
 import os
 import csv
 import time
 import datetime
 from datetime import date
+#Konfigurationsdatei
+import configparser
 #für mehrdimensionale arrays
 import numpy as np
 #typische zeitfunktion
 print(datetime.datetime.now().strftime("%A %b %w %H:%M:%S - %d.%m.%Y"))
 
-#Daten aus Datei laden
+# ------- Konfigurationsdatei -------
+with open('confi.ini', 'r') as configfile:
+    config = configparser.ConfigParser()
+    config.read("confi.ini")
+#Zugriff Konfigurationsdatei
+settings = config["settings"]
+
+#-------Daten aus Datei laden-------
 def get_data():
     #Reader zum Öffnen der CSV Datei
-    valid = False
-    pfad = "BspListe.csv" # macht wenig Sinn den Pfad hier stehen zu haben
-    while not valid:
+    #valid = False
+    pfad = settings["Buchungspfad"] # macht wenig Sinn den Pfad hier stehen zu haben
+    while True:
         try:
             with open(pfad) as csv_file:
                 reader = csv.reader(csv_file, delimiter=';')
                 #header_row = next(reader)
-                data = []
-
+                data_get = []
+                
                     #Schleife zum Einlesen der Daten
                 for row in reader:
-                    data.append(row)
+                    data_get.append(row)
                 #print(buchung)
                 #zurückgeben von Buchung
                 print("mist")
-
-            return data
+            return data_get
         except:
             print("Datei nicht gefunden!\n")
             print("Bisheriger Pfad:", pfad)
             pfad = input("Bitte geben sie einen gültigen Pfad ein:")
 
-
-#Eingabe neuer Daten
-def input_data(data):
-
+#------- Eingabe neuer Daten -------
+def input_data():
+    data_in = get_data()
     while True:
         #Vergabe ID
         id = 2
@@ -55,7 +62,6 @@ def input_data(data):
 
         print(datum.strftime("%d.%m.%Y")) #Kalenderdatum mit bestimmten Format ausgeben
         print(datum.strftime("%A")) #Wochentag des Datums ausgeben
-
         
         #Start und Endzeit eingeben
         starth = input("Geben Sie die Startstunde an:")
@@ -63,9 +69,7 @@ def input_data(data):
         #startt = time(int(startm), int(startm))
         start = 20
         #print(startt)
-
         endt = 22
-
         
         #Gleiche Angaben
         person = input("Geben Sie den Verantwortlichen an:") 
@@ -73,27 +77,35 @@ def input_data(data):
         nutzung = input("Geben Sie die Nutzungsart an:")    #dropdown list
         status = input("Geben Sie den Status an:")  #dropdown list
 
-
         buchungtemp =[id, raum, tag, datum, start, endt, person, produktion, nutzung, status]
-        data.append(buchungtemp)
-        print(data)
+        data_in.append(buchungtemp)
+        print(data_in)
         quest = input ("Sie wollen Sie eine Mehrfacheingabe starten?: [ja] [nein]")
 
         #Speicherung der Daten in CSV Datei
-        save_data(data)
-
+        save_data(data_in)
         break
 
-#Daten speichern
-
-def save_data(data):
-    with open('BspListe.csv', mode='w', newline='') as csv_file:
-            writer = csv.writer(csv_file, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-            writer.writerows(data)
+# ------- Daten speichern ------- 
+def save_data(data_sa):
+    print(data_sa)
+    valid = False 
+    pfad  = settings["Buchungspfad"]
+    while not valid:
+        try:
+            with open(pfad, mode='w', newline='') as csv_file:
+                    writer = csv.writer(csv_file, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+                    writer.writerows(data_sa)
+                    print("Buchungsdaten gespeichert!")
+                    valid = True
+        except:
+            print("Datei konnte nicht gefunden werden oder nicht gespeichert werden.")
+            print("Bisheriger Pfad:", pfad)
+            pfad = input("Bitte geben sie einen gültigen Pfad ein:")
 
 #def check_data():
 
-#Anzeige der Raumbuchungsdaten
+# ------- Anzeige der Raumbuchungsdaten -------
 def view_data():
     view = get_data()
     #Zeilenweise ausgeben der Buchungen
@@ -123,30 +135,29 @@ def search_data():
             if not liste:
                 print("keine Treffer!")
                 return
-            
 
             #Zeilenweise ausgabe der gefundenen Daten    
             for l in liste: 
                 print(l)
             return 
-            #Anfrage für Löschung des Daten
-
+        #Abbruch der Anfrage
         if auswahl1 == "a":
             break
 
-#löschen von daten
-def delete_data(data):
-    search_data()
-    delete = input("Geben Sie die ID zum Löschen der Buchung ein:\n")
+#  ------- löschen von Daten -------
+def delete_data():
+    data_de = get_data()
+    search_data() #Aufruf der Suchfunktion, um Daten anzeigen zu lassen
+    delete = input("Geben Sie die ID zum Löschen der Buchung ein:\n") #Suchvariable
     i = 0
-    j = len(data)
+    j = len(data_de)
     while i < j:
-        if data[i][0] == delete:
-            data.remove(data[i])
+        if data_de[i][0] == delete:
+            data_de.remove(data[i])
             print("Daten gelöscht!")
             break
         i = i+1
-    save_data(data)
+    save_data(data_de) #Speicherung der Daten 
 
 #def archive_data():
 
@@ -154,19 +165,16 @@ def delete_data(data):
 
 #def mail_raummeldungen():
 
+# ------- Wöchentliche Meldungen -------
 #def mail_wochenmeldung():
 
 
-#Programmablauf
- 
-#Datei einlesen
-
-buchung = get_data()
+# ------- Programmablauf -------
 
 while True: 
     auswahl = input("Wählen Sie eine Option: \n[1] neue Buchung(en) \n[2] Anzeige der Buchungsliste \n[4] Suche nach Daten \n[5] Löschen von Daten \n[a] Abbrechen\n")
     if auswahl == "1":
-        input_data(buchung)
+        input_data()
     if auswahl == "2":
         view_data()
     if auswahl == "3":
@@ -174,7 +182,7 @@ while True:
     if auswahl == "4":
         search_data()
     if auswahl == "5":
-        delete_data(buchung)
+        delete_data()
     if auswahl == "a":
         break
 
