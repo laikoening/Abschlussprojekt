@@ -153,7 +153,7 @@ def delete_data():
     j = len(data_de)
     while i < j:
         if data_de[i][0] == delete:
-            data_de.remove(data[i])
+            data_de.remove(data_de[i])
             print("Daten gelöscht!")
             break
         i = i+1
