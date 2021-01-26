@@ -1,4 +1,6 @@
-#Das soll das Grundkonzept werden
+#Status 26.01., bitte nicht ändern!
+
+
 
 # ------- IMPORTS -------
 import os
@@ -149,25 +151,6 @@ def search_data():
         #Abbruch der Anfrage
         if auswahl1 == "a":
             break
-# ------- Suche für die GUI -------
-def search_data1(search):
-
-    data = get_data()          
-    i = 0
-    liste = [] #Liste der gefunden passenden Buchungen
-    while i < len(data): #Beginn Suchalgorythmus
-        j=0
-        while j < 9:
-            if data[i][j] == search:
-                #print(data[i][j])
-                liste.append(data[i])
-            j = j +1
-        i = i+1
-    if not liste:
-        e = "keine Treffer!"
-        return e
-    #Zeilenweise ausgabe der gefundenen Daten    
-    return liste  
 
 #  ------- löschen von Daten -------
 def delete_data():
@@ -195,7 +178,7 @@ def delete_data():
 
 
 # ------- Programmablauf -------
-"""
+
 while True: 
     auswahl = input("Wählen Sie eine Option: \n[1] neue Buchung(en) \n[2] Anzeige der Buchungsliste \n[4] Suche nach Daten \n[5] Löschen von Daten \n[a] Abbrechen\n")
     if auswahl == "1":
@@ -210,4 +193,5 @@ while True:
         delete_data()
     if auswahl == "a":
         break
-"""
+
+
