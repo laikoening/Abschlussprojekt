@@ -94,7 +94,6 @@ def input_data():
 
 # ------- Daten speichern ------- 
 def save_data(data_sa):
-    print(data_sa)
     valid = False 
     pfad  = settings["Buchungspfad"]
     while not valid:
@@ -102,7 +101,6 @@ def save_data(data_sa):
             with open(pfad, mode='w', newline='') as csv_file:
                     writer = csv.writer(csv_file, delimiter=';', quoting=csv.QUOTE_MINIMAL)
                     writer.writerows(data_sa)
-                    print("Buchungsdaten gespeichert!")
                     valid = True
         except:
             print("Datei konnte nicht gefunden werden oder nicht gespeichert werden.")

@@ -9,8 +9,8 @@ anfrage = []
 
 
 
-sg.theme_previewer() #show all themes
-sg.theme('DarkPurple7') #choose a theme
+#sg.theme_previewer() #show all themes
+sg.theme('Purple') #choose a theme
 
 #für die Dropdownlist der Eingabe
 list1 = ['-Raumwunsch-','Buehne','KLEM','155','136']
@@ -36,8 +36,8 @@ tab4_layout = [[sg.T('Hier können weitere Raumbuchungsanfragen erstellt werden.
                 #Infos zur Raumanfrage
 
                 [sg.InputCombo([list1[0], list1[1], list1[2], list1[3]], key='raum', size=(20,200)),
-                sg.InputText(key='datum', size=(20,200)), sg.InputText(key='start', size=(20,200)),sg.InputText(key='ende', size=(20,200))],
-                [sg.InputText(key='person', size=(20,200)), sg.InputText(key = 'produkt', size=(20,200)),
+                sg.Input('Datum',key='datum', size=(22,200)), sg.InputText(key='start', size=(22,200)),sg.InputText(key='ende', size=(22,200))],
+                [sg.InputText(key='person', size=(22,200)), sg.InputText(key = 'produkt', size=(22,200)),
                 sg.InputCombo([list2[0], list2[1], list2[2], list2[3], list2[4], list2[5],list2[6]], key='art', size=(20,200)),
                 sg.InputCombo([list3[0], list3[1], list3[2]], key='status', size=(20,200))],
                 
@@ -73,8 +73,8 @@ while True:
     #Suche
     if event == 'Suchen':  
         window.FindElement('Output').Update('')
-        search = textInputs_such
-        liste = search_data1(search)
+        such = textInputs_such
+        liste = search_data1(such)
         #for l in liste:
             #print(l)
         window.FindElement('Output').Update(liste)
@@ -90,7 +90,7 @@ while True:
 
     #Eingabe
     if event == 'ueber':
-        anfrage.append([in_raum, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
+        anfrage.append(["2",in_raum,"Freitag", in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
         print(in_raum, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status)
     
     if event == 'speichern': 
