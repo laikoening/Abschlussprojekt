@@ -6,6 +6,7 @@ import csv
 import time
 import datetime
 from datetime import date
+
 #für mehrdimensionale arrays
 import numpy as np
 #typische zeitfunktion
@@ -53,14 +54,18 @@ def input_data(data):
         datum = date(int(jj), int(mm), int(dd)) 
         tag = datum.strftime("%A")
 
+        #woche = datum.strftime("%V")
+
         print(datum.strftime("%d.%m.%Y")) #Kalenderdatum mit bestimmten Format ausgeben
         print(datum.strftime("%A")) #Wochentag des Datums ausgeben
 
+
+        #print (datum.strftime("%V")) #Kalenderwoche 
         
         #Start und Endzeit eingeben
-        starth = input("Geben Sie die Startstunde an:")
-        startm = input("Geben Sie die Startminuten an:")
-        #startt = time(int(startm), int(startm))
+       # starth = input("Geben Sie die Startstunde an:")
+       # startm = input("Geben Sie die Startminuten an:")
+       # startt = time(int(startm), int(startm))
         start = 20
         #print(startt)
 
@@ -77,7 +82,7 @@ def input_data(data):
         buchungtemp =[id, raum, tag, datum, start, endt, person, produktion, nutzung, status]
         data.append(buchungtemp)
         print(data)
-        quest = input ("Sie wollen Sie eine Mehrfacheingabe starten?: [ja] [nein]")
+        #quest = input ("Sie wollen Sie eine Mehrfacheingabe starten?: [ja] [nein]")
 
         #Speicherung der Daten in CSV Datei
         save_data(data)
@@ -148,14 +153,37 @@ def delete_data(data):
         i = i+1
     save_data(data)
 
+
 #def archive_data():
 
 #def show_warnings():
 
 #def mail_raummeldungen():
 
-#def mail_wochenmeldung():
 
+def mail_wochenmeldung():
+    data=get_data()
+    for value in data:
+        day, month, year = (int(i) for i in value[3].split('.')) 
+        KW = datetime.date(year, month, day)
+        value.insert(10,KW.strftime("%V"))
+        #print(KW.strftime("%V")) 
+    #save_data(data)
+    
+        #print((KW))
+
+def message_body():
+    data=get_data()
+    liste = {} 
+    i=0
+    while i< len(data):
+        for value in data:
+            key=value[2]
+            liste[key] = value[4]+";"+value[5]
+        if  data == None:
+            print("no data")
+        i=i+1
+    print(liste) 
 
 #Programmablauf
  
@@ -164,7 +192,7 @@ def delete_data(data):
 buchung = get_data()
 
 while True: 
-    auswahl = input("Wählen Sie eine Option: \n[1] neue Buchung(en) \n[2] Anzeige der Buchungsliste \n[4] Suche nach Daten \n[5] Löschen von Daten \n[a] Abbrechen\n")
+    auswahl = input("Wählen Sie eine Option: \n[1] neue Buchung(en) \n[2] Anzeige der Buchungsliste \n[4] Suche nach Daten \n[5] Löschen von Daten \n[a] Abbrechen \n[t] test \n[l] test2\n")
     if auswahl == "1":
         input_data(buchung)
     if auswahl == "2":
@@ -177,4 +205,7 @@ while True:
         delete_data(buchung)
     if auswahl == "a":
         break
-
+    if auswahl == "t":
+        mail_wochenmeldung()
+    if auswahl == "l":
+        message_body()
