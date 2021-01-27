@@ -1,14 +1,14 @@
+#Imports
 import PySimpleGUI as sg 
-from Grundstruktur import search_data1
-from Grundstruktur import get_data
-from Grundstruktur import save_data
-from Grundstruktur import delete_data
+from Dateihandle import search_data
+from Dateihandle import get_data
+from Dateihandle import save_data
+from Dateihandle import delete_data
 
-#Für die Eingabe Funktion
-data1 = get_data()
-anfrage = []
-choices =[]
+anfrage = [] #Tab4: Liste der Anfragen
+choices =[] #Tab1: Liste der Listbox
 
+#Design des Fenstern
 #sg.theme_previewer() #show all themes
 sg.theme('Topanga') #choose a theme
 
@@ -52,9 +52,11 @@ window = sg.Window('DIE BÜHNE', layout, default_element_size=(100,20)) #create 
 
 # Event Loop to process "events" and get the "values" of the inputs
 while True: 
+    data1 = get_data() #Tab4
+
     event, values = window.read() 
     textInputs_such = values['Input']
-    #Values zur Ausgabe
+    #Tab4: Values zur Ausgabe
     in_raum = values['raum']
     in_datum = values['datum']
     in_start = values['start']
@@ -63,43 +65,44 @@ while True:
     in_produkt = values['produkt']
     in_art = values['art']
     in_status = values['status']
-#Tab1 - - - 
-    if event == 'Suchen':  #Suchfunktion
+
+#Tab1 - - - - -
+    #Suchfunktion
+    if event == 'Suchen':  
         window.FindElement('listbox').Update('')
-        such = textInputs_such
-        liste = search_data1(such)
-        choices = liste
+        choices = search_data(textInputs_such) #Aufruf und Ausgabe der Suchfunktion
         window.FindElement('listbox').Update(choices)
-    if event == 'Alle Anzeigen': #Alle Einträge Anzeigen
+    #Anzeigen aller Einträge    
+    if event == 'Alle Anzeigen': 
         window.FindElement('listbox').Update('')
-        alles = get_data()
-        window.FindElement('listbox').Update(alles)
-    if event == 'Eintrag Löschen': #ausgewähltes Element löschen
-        get = values['listbox'][0]
+        choices = get_data()
+        window.FindElement('listbox').Update(choices)
+    #Löschen des ausgewählten Elements
+    if event == 'Eintrag Löschen': 
+        get = values['listbox'][0] #hier muss das Listenelement erst umgewandelt werden
         do = get[0]
         delete_data(do)
         #liste aktualisieren
-        such = textInputs_such
-        liste = search_data1(such)
-        choices = liste
+        choices = search_data(textInputs_such)
         window.FindElement('listbox').Update(choices)
     if event == 'Infobox': 
-        #sg.popup('you entered:', textInputs) #popup is a GUI equivalent of a print statement
         sg.popup("DIE BÜHNE - das Theater der TU Dresden")
-    if event == 'Liste Leeren': #Liste leeren
+    #Leeren der Liste
+    if event == 'Liste Leeren': 
         window.FindElement('listbox').Update('')
     
-#Tag4 - - -     
-    #Eingabe
+#Tab4 - - - - -  
+    #Eingabe neuer Eintrag
     if event == 'ueber':
         anfrage.append(["2",in_raum,"Freitag", in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
         print(in_raum, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status)
+    #Speichern der Einträge
     if event == 'speichern': 
         save_data(data1 + anfrage)
         sg.popup("Anfragen gespeichert")
-        data1 = get_data()
         anfrage = []
-
+#Programm beenden - - - - -
     if event == sg.WIN_CLOSED: 
         break
+
 window.close()
