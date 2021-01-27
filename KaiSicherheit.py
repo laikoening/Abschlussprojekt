@@ -1,4 +1,6 @@
-#Das soll das Grundkonzept werden
+#Status 26.01., bitte nicht ändern!
+
+
 
 # ------- IMPORTS -------
 import os
@@ -6,6 +8,8 @@ import csv
 import time
 import datetime
 from datetime import date
+#Konfigurationstool
+import configparser
 #für mehrdimensionale arrays
 import numpy as np
 #typische zeitfunktion
@@ -58,18 +62,13 @@ def input_data():
         datum = date(int(jj), int(mm), int(dd)) 
         tag = datum.strftime("%A")
 
-        #woche = datum.strftime("%V")
-
         print(datum.strftime("%d.%m.%Y")) #Kalenderdatum mit bestimmten Format ausgeben
         print(datum.strftime("%A")) #Wochentag des Datums ausgeben
-
-
-        #print (datum.strftime("%V")) #Kalenderwoche 
         
         #Start und Endzeit eingeben
-       # starth = input("Geben Sie die Startstunde an:")
-       # startm = input("Geben Sie die Startminuten an:")
-       # startt = time(int(startm), int(startm))
+        starth = input("Geben Sie die Startstunde an:")
+        startm = input("Geben Sie die Startminuten an:")
+        #startt = time(int(startm), int(startm))
         start = 20
         #print(startt)
         endt = 22
@@ -83,12 +82,11 @@ def input_data():
 
         #in zwischenliste ablegen
         buchungtemp =[id, raum, tag, datum, start, endt, person, produktion, nutzung, status]
-        data.append(buchungtemp)
-        print(data)
-        #quest = input ("Sie wollen Sie eine Mehrfacheingabe starten?: [ja] [nein]")
-
-        #Speicherung der Daten in CSV Datei
-        save_data(data)
+        data_in.append(buchungtemp)
+        print(buchungtemp)
+        
+        quest1 = input ("Sie wollen Sie eine Mehrfacheingabe starten?: [ja] [nein]") #Frage, ob Daten gleich bleiben sollen
+        quest2 = input("Wollen Sie weitere Eingaben vornehmen?")
 
 
         if quest1 and quest2 == "nein":
@@ -98,6 +96,7 @@ def input_data():
 
 # ------- Daten speichern ------- 
 def save_data(data_sa):
+    print(data_sa)
     valid = False 
     pfad  = settings["Buchungspfad"]
     while not valid:
@@ -105,6 +104,7 @@ def save_data(data_sa):
             with open(pfad, mode='w', newline='') as csv_file:
                     writer = csv.writer(csv_file, delimiter=';', quoting=csv.QUOTE_MINIMAL)
                     writer.writerows(data_sa)
+                    print("Buchungsdaten gespeichert!")
                     valid = True
         except:
             print("Datei konnte nicht gefunden werden oder nicht gespeichert werden.")
@@ -151,25 +151,6 @@ def search_data():
         #Abbruch der Anfrage
         if auswahl1 == "a":
             break
-# ------- Suche für die GUI -------
-def search_data1(search):
-
-    data = get_data()          
-    i = 0
-    liste = [] #Liste der gefunden passenden Buchungen
-    while i < len(data): #Beginn Suchalgorythmus
-        j=0
-        while j < 9:
-            if data[i][j] == search:
-                #print(data[i][j])
-                liste.append(data[i])
-            j = j +1
-        i = i+1
-    if not liste:
-        e = "keine Treffer!"
-        return e
-    #Zeilenweise ausgabe der gefundenen Daten    
-    return liste  
 
 #  ------- löschen von Daten -------
 def delete_data():
@@ -186,13 +167,14 @@ def delete_data():
         i = i+1
     save_data(data_de) #Speicherung der Daten 
 
-
 #def archive_data():
 
 #def show_warnings():
 
 #def mail_raummeldungen():
 
+# ------- Wöchentliche Meldungen -------
+#def mail_wochenmeldung():
 
 def mail_wochenmeldung():
     data=get_data()
@@ -218,10 +200,11 @@ def message_body():
         i=i+1
     print(liste) 
 
+
 # ------- Programmablauf -------
-"""
+
 while True: 
-    auswahl = input("Wählen Sie eine Option: \n[1] neue Buchung(en) \n[2] Anzeige der Buchungsliste \n[4] Suche nach Daten \n[5] Löschen von Daten \n[a] Abbrechen \n[t] test \n[l] test2\n")
+    auswahl = input("Wählen Sie eine Option: \n[1] neue Buchung(en) \n[2] Anzeige der Buchungsliste \n[4] Suche nach Daten \n[5] Löschen von Daten \n[a] Abbrechen\n")
     if auswahl == "1":
         input_data()
     if auswahl == "2":
@@ -234,7 +217,5 @@ while True:
         delete_data()
     if auswahl == "a":
         break
-    if auswahl == "t":
-        mail_wochenmeldung()
-    if auswahl == "l":
-        message_body() 
+
+
