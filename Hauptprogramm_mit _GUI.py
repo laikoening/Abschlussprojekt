@@ -4,6 +4,13 @@ from Dateihandle import search_data
 from Dateihandle import get_data
 from Dateihandle import save_data
 from Dateihandle import delete_data
+import json
+
+#Konfigurationsdatei
+with open("data_file.json") as json_data_file:
+    jdata = json.load(json_data_file)
+#Zugriff Konfigurationsdatei
+tab4=jdata["tab4"]
 
 anfrage = [] #Tab4: Liste der Anfragen
 choices =[] #Tab1: Liste der Listbox
@@ -11,11 +18,6 @@ choices =[] #Tab1: Liste der Listbox
 #Design des Fenstern
 #sg.theme_previewer() #show all themes
 sg.theme('Topanga') #choose a theme
-
-#für die Dropdownlist der Eingabe
-list1 = ['-Raumwunsch-','Buehne','KLEM','155','136']
-list2 = ['-Veranstaltungsart-','Aufführung','Auswahlworkshop','Improtheater','Probe','Workshop', 'Sonstiges']
-list3 = ['anfragen','ausstehend','bestätigt']
 
 #Tab1 - Suche
 tab1_layout = [[sg.Text('Geben Sie einen Suchbegriff ein:')], 
@@ -34,11 +36,11 @@ tab4_layout = [[sg.T('Hier können weitere Raumbuchungsanfragen erstellt werden.
                #[sg.Radio('Einfachanfragen     ', "anfrage1", default=True, size=(10,1)), sg.Radio('Mehrfachanfragen', "anfrage2")],
                 
                 #Infos zur Raumanfrage
-                [sg.InputCombo([list1[0], list1[1], list1[2], list1[3]], key='raum', size=(20,200)),
+                [sg.Drop(values = tab4["droplist1"], key='raum', size=(20,200)),
                 sg.Input('Datum',key='datum', size=(22,200)), sg.InputText(key='start', size=(22,200)),sg.InputText(key='ende', size=(22,200))],
                 [sg.InputText(key='person', size=(22,200)), sg.InputText(key = 'produkt', size=(22,200)),
-                sg.InputCombo([list2[0], list2[1], list2[2], list2[3], list2[4], list2[5],list2[6]], key='art', size=(20,200)),
-                sg.InputCombo([list3[0], list3[1], list3[2]], key='status', size=(20,200))],
+                sg.Drop(values= tab4["droplist2"], key='art', size=(20,200)),
+                sg.Drop(values = tab4["droplist3"], key='status', size=(20,200))],
                 
                 [sg.B('Anfrage übernehmen', key= 'ueber')],
                 [sg.Output(key = 'Output_Ein')],

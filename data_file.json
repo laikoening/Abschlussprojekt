@@ -1,0 +1,12 @@
+{
+    "settings": {
+        "buchungspfad": "BspListe.csv"
+    },
+
+    "tab4": {
+        "droplist1":["Buehne","KLEM","155","136"],
+        "droplist2":["Aufführung","Auswahlworkshop","Improtheater","Probe","Workshop", "Sonstiges"],
+        "droplist3":["unbearbeitet","angefragt","bestätig"]
+    }
+
+}

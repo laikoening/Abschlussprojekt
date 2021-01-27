@@ -8,19 +8,19 @@ import datetime
 from datetime import date
 import numpy as np #für mehrdimensionale arrays
 import configparser
+import json
 
 # ------- Konfigurationsdatei -------
-with open('confi.ini', 'r') as configfile:
-    config = configparser.ConfigParser()
-    config.read("confi.ini")
+with open("data_file.json") as json_data_file:
+    jdata = json.load(json_data_file)
 #Zugriff Konfigurationsdatei
-settings = config["settings"]
+settings = jdata["settings"]
 
 #-------Daten aus Datei laden-------
 def get_data():
     #Reader zum Öffnen der CSV Datei
     #valid = False
-    pfad = settings["Buchungspfad"] # macht wenig Sinn den Pfad hier stehen zu haben
+    pfad = settings["buchungspfad"] # macht wenig Sinn den Pfad hier stehen zu haben
     while True:
         try:
             with open(pfad) as csv_file:
@@ -42,7 +42,7 @@ def get_data():
 # ------- Daten speichern ------- 
 def save_data(data_sa):
     valid = False 
-    pfad  = settings["Buchungspfad"]
+    pfad  = settings["buchungspfad"]
     while not valid:
         try:
             with open(pfad, mode='w', newline='') as csv_file:
