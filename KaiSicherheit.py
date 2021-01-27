@@ -174,31 +174,8 @@ def delete_data():
 #def mail_raummeldungen():
 
 # ------- Wöchentliche Meldungen -------
+
 #def mail_wochenmeldung():
-
-def mail_wochenmeldung():
-    data=get_data()
-    for value in data:
-        day, month, year = (int(i) for i in value[3].split('.')) 
-        KW = datetime.date(year, month, day)
-        value.insert(10,KW.strftime("%V"))
-        #print(KW.strftime("%V")) 
-    #save_data(data)
-    
-        #print((KW))
-
-def message_body():
-    data=get_data()
-    liste = {} 
-    i=0
-    while i< len(data):
-        for value in data:
-            key=value[2]
-            liste[key] = value[4]+";"+value[5]
-        if  data == None:
-            print("no data")
-        i=i+1
-    print(liste) 
 
 
 # ------- Programmablauf -------
