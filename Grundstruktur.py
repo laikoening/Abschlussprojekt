@@ -10,6 +10,7 @@ from datetime import date
 import numpy as np
 #typische zeitfunktion
 print(datetime.datetime.now().strftime("%A %b %w %H:%M:%S - %d.%m.%Y"))
+import configparser
 
 # ------- Konfigurationsdatei -------
 with open('confi.ini', 'r') as configfile:
@@ -42,9 +43,11 @@ def get_data():
             pfad = input("Bitte geben sie einen gültigen Pfad ein:")
 
 #------- Eingabe neuer Daten -------
+
 def input_data():
     data_in = get_data()
-    quest1 = "Ja"
+    quest1 = "ja"
+    quest2 = "ja"
     while True:
         #Vergabe ID
         id = 2
@@ -75,7 +78,7 @@ def input_data():
         endt = 22
         
         #Gleiche Angaben
-        if quest1 == "nein":
+        if quest2 == "nein":
             person = input("Geben Sie den Verantwortlichen an:") 
             produktion = input("Geben Sie die Produktion an:")  # dropdown liste
             nutzung = input("Geben Sie die Nutzungsart an:")    #dropdown list
@@ -83,12 +86,12 @@ def input_data():
 
         #in zwischenliste ablegen
         buchungtemp =[id, raum, tag, datum, start, endt, person, produktion, nutzung, status]
-        data.append(buchungtemp)
-        print(data)
+        data_in.append(buchungtemp)
+        print(data_in)
         #quest = input ("Sie wollen Sie eine Mehrfacheingabe starten?: [ja] [nein]")
 
         #Speicherung der Daten in CSV Datei
-        save_data(data)
+        save_data(data_in)
 
 
         if quest1 and quest2 == "nein":
@@ -216,7 +219,7 @@ def message_body():
         if  data == None:
             print("no data")
         i=i+1
-    print(liste) 
+    print(liste)
 
 # ------- Programmablauf -------
 """
@@ -238,3 +241,4 @@ while True:
         mail_wochenmeldung()
     if auswahl == "l":
         message_body() 
+"""
