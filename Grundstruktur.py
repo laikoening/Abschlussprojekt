@@ -175,16 +175,14 @@ def search_data1(search):
     return liste  
 
 #  ------- löschen von Daten -------
-def delete_data():
+def delete_data(delete):
     data_de = get_data()
-    search_data() #Aufruf der Suchfunktion, um Daten anzeigen zu lassen
-    delete = input("Geben Sie die ID zum Löschen der Buchung ein:\n") #Suchvariable
     i = 0
     j = len(data_de)
     while i < j:
         if data_de[i][0] == delete:
             data_de.remove(data_de[i])
-            print("Daten gelöscht!")
+            #print("Daten gelöscht!")
             break
         i = i+1
     save_data(data_de) #Speicherung der Daten 
