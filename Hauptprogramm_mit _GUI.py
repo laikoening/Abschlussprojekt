@@ -4,6 +4,9 @@ from Dateihandle import search_data
 from Dateihandle import get_data
 from Dateihandle import save_data
 from Dateihandle import delete_data
+from Dateihandle import send_mail
+from Dateihandle import show_mail
+
 import json
 
 #Konfigurationsdatei
@@ -14,6 +17,7 @@ tab4=jdata["tab4"]
 
 anfrage = [] #Tab4: Liste der Anfragen
 choices =[] #Tab1: Liste der Listbox
+mails = [] #Tab 2: Liste mit Buchungen 
 
 #Design des Fenstern
 #sg.theme_previewer() #show all themes
@@ -27,7 +31,12 @@ tab1_layout = [[sg.Text('Geben Sie einen Suchbegriff ein:')],
  [sg.B('Alle Anzeigen'),sg.B('Eintrag Löschen'), sg.B('Liste Leeren'),sg.B('Infobox')]]
 
 #Tab2 - Wöchentliche Meldungen
-tab2_layout = [[sg.T('Hier arbeitet Olena gerade dran.')]]  
+tab2_layout = [ [sg.Text('Geben Sie die Kalenderwoche ein:')],
+            [sg.Input(key='KW'), sg.Button('OK')],
+            [sg.Text('E-Mail Text:')],
+            [sg.Text(key='e-mail body',size=(35, 10))],                          
+            [sg.Button('Send mail'),sg.Button('Edit mail'), sg.Button('Exit')],
+                ]  
 #Tab3 - Raum Meldungen
 tab3_layout = [[sg.T('Hier arbeitet Olena gerade dran.')]] 
 
@@ -67,6 +76,8 @@ while True:
     in_produkt = values['produkt']
     in_art = values['art']
     in_status = values['status']
+    #Tab2: Values zur Ausgabe
+    Kalenderwoche=values['KW']
 
 #Tab1 - - - - -
     #Suchfunktion
@@ -92,7 +103,18 @@ while True:
     #Leeren der Liste
     if event == 'Liste Leeren': 
         window.FindElement('listbox').Update('')
-    
+#Tab2 - - - - -  
+    if event == 'OK':
+        window.FindElement('e-mail body').Update('')
+        mails = search_data(Kalenderwoche)
+        window.FindElement('e-mail body').Update(mails)
+    if event == 'Send mail':
+        send_mail()
+    if event == 'Edit mail':
+        show_mail()
+    if event == 'Exit':
+        window.Close()
+
 #Tab4 - - - - -  
     #Eingabe neuer Eintrag
     if event == 'ueber':
