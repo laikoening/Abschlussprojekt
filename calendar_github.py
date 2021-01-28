@@ -5,6 +5,9 @@ URL = "https://nextcloud05.webo.cloud/remote.php/dav"
 UserName = "anna.gafurova@htw-dresden.de" 
 Password = " " 
 
+DTSTAMP:"20210126T060000Z"
+DTSTART:"20210126T060000Z" 
+
 #Setting up a caldav client object and a principal object
 client = caldav.DAVClient(url=URL, username=UserName, password=Password) 
 my_principal = client.principal() 
@@ -29,8 +32,8 @@ VERSION:2.0
 PRODID:-//Example Corp.//CalDAV Client//EN
 BEGIN:VEVENT
 UID:20210126T060000Z-123401@example.com 
-DTSTAMP:20210126T060000Z 
-DTSTART:20210126T060000Z 
+DTSTAMP:%s 
+DTSTART:%s 
 DTEND:20210127T230000Z 
 RRULE:FREQ=YEARLY
 LOCATION:My office 
