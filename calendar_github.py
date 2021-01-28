@@ -43,5 +43,22 @@ END:VEVENT
 END:VCALENDAR
 """ % (DTSTART, DTEND, location))
 
- 
-print('Hello %s, %s' % (DTSTART, DTEND))
+ print('Hello %s, %s' % (DTSTART, DTEND))
+
+ #2.Var:
+#evt= """BEGIN:VCALENDAR
+#VERSION:2.0
+#PRODID:-//Example Corp.//CalDAV Client//EN
+#BEGIN:VEVENT
+#UID:20200516T060000Z-123401@example.com
+#DTSTAMP:20210516T060000Z
+#DTSTART:"""+DTSTART+"""
+#DTEND:"""+DTEND+"""
+#location:"""+location+"""
+#RRULE:FREQ=YEARLY
+#SUMMARY:Do the needful
+#END:VEVENT
+#END:VCALENDAR
+#"""
+#print(type(evt))
+#my_event = my_new_calendar.save_event(evt)
