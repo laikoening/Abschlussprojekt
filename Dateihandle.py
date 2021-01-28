@@ -95,25 +95,20 @@ def delete_data(delete):
 
 #Lenas Funktonen
 def Kalenderwoche(KW):
+    KW=int(KW)
     data=get_data()
     liste={}
-    i = 0
-    j = len(data)
-    while i < j:
-        for value in data:
-            day, month, year = (int(n) for n in value[3].split('.'))
-            X_Woche = datetime.date(year, month, day)           
-            #week_number = X_Woche.isocalendar()[1]
-            #liste[week_number]=data[i][0:9]
-            #if KW == week_number:
-                #print('*****') 
-            liste[X_Woche.strftime("%V")]=data[i][0:9]
-            if KW == liste.keys():
-                print(liste.get(KW))
-            else:
-                print('no data')
-        i=i+1
-    #print(liste)
+    for value in data:
+        day, month, year = (int(n) for n in value[3].split('.'))
+        X_Woche = datetime.date(year, month, day)   
+        week_number = X_Woche.isocalendar()[1]                 
+        liste[week_number]=value[0:9]
+        if KW in liste.keys():
+            x=liste.get(KW)
+        else:
+            err='no data'
+            return(err)
+    return(x)
 
 
 def message_body():
@@ -137,8 +132,8 @@ def send_mail():
     mail.Subject = 'Message subjeact'       
     mail.Body = 'Message body'                             # take text from "Buchungsliste"
     mail.Send()
-#E-Mail anschauen 
-#    
+
+#E-Mail anschauen   
 def show_mail():
     text=['1','2','3','4']
     outlook = win32.Dispatch('outlook.application')
@@ -155,10 +150,6 @@ def show_mail():
 
 #while True:
     #action= input('test')
- 
     #if action== 't':
-       # Kalenderwoche(KW=int(input('Geben Sie die Kalenderwoche ein: ')))
-       # show_mail()
-    
-
-
+      # print(Kalenderwoche(2)) 
+    #show_mail()
