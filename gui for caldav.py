@@ -9,7 +9,7 @@ def bumbum():
  
     URL = "https://nextcloud05.webo.cloud/remote.php/dav" 
     UserName = "anna.gafurova@htw-dresden.de" 
-    Password = "Tratatagidro2017ABC@" 
+    Password = "Tr...." 
  
     client = caldav.DAVClient(url=URL, username=UserName, password=Password) 
     my_principal = client.principal() 
