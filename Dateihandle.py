@@ -86,6 +86,11 @@ def delete_data(delete):
         i = i+1
     save_data(data_de) #Speicherung der Daten 
 
+# ------- Wochentag ermitteln -------
+def get_day(tag):
+    tag = datetime.datetime.strptime(tag, '%d.%m.%Y')
+    return tag.strftime('%A')
+
 #def prove_data():
 
 #def archive_data():

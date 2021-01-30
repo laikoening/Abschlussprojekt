@@ -6,7 +6,11 @@ from Dateihandle import save_data
 from Dateihandle import delete_data
 from Dateihandle import send_mail
 from Dateihandle import show_mail
+<<<<<<< HEAD
 from Dateihandle import Kalenderwoche
+=======
+from Dateihandle import get_day
+>>>>>>> 0850d366d7bf9c3e36a133b7965f8a6555f3c101
 
 import json
 
@@ -18,6 +22,7 @@ tab4=jdata["tab4"]
 
 anfrage = [] #Tab4: Liste der Anfragen
 choices =[] #Tab1: Liste der Listbox
+header = ["ID  Wochentag Datum  Start  Ende  Person  Produktion  Art  Status"] #Tab2: Header für Table
 mails = [] #Tab 2: Liste mit Buchungen 
 
 #Design des Fenstern
@@ -86,7 +91,7 @@ while True:
     if event == 'Suchen':  
         window.FindElement('listbox').Update('')
         choices = search_data(textInputs_such) #Aufruf und Ausgabe der Suchfunktion
-        window.FindElement('listbox').Update(choices)
+        window.FindElement('listbox').Update(header+choices)
     #Anzeigen aller Einträge    
     if event == 'Alle Anzeigen': 
         window.FindElement('listbox').Update('')
@@ -120,8 +125,10 @@ while True:
 #Tab4 - - - - -  
     #Eingabe neuer Eintrag
     if event == 'ueber':
-        anfrage.append(["2",in_raum,"Freitag", in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
-        print(in_raum, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status)
+        wtag = get_day(in_datum)
+        #check_data(in_raum, in_datum, in_start, in_ende)
+        anfrage.append(["2",in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
+        print(in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status)
     #Speichern der Einträge
     if event == 'speichern': 
         save_data(data1 + anfrage)
