@@ -4,9 +4,11 @@ from Dateihandle import search_data
 from Dateihandle import get_data
 from Dateihandle import save_data
 from Dateihandle import delete_data
+from Dateihandle import get_day
 from Dateihandle import send_mail
 from Dateihandle import show_mail
-from Dateihandle import get_day
+from Dateihandle import Kalenderwoche
+from Dateihandle import suche_KW
 
 import json
 
@@ -34,8 +36,8 @@ tab1_layout = [[sg.Text('Geben Sie einen Suchbegriff ein:')],
 
 #Tab2 - Wöchentliche Meldungen
 tab2_layout = [ [sg.Text('Geben Sie die Kalenderwoche ein:')],
-            [sg.Input(key='KW'), sg.Button('OK')],
-            [sg.Text('E-Mail Text:')],
+            [sg.InputText(size=(20,10), key='KW'), sg.Button('OK')],
+            [sg.Listbox(mails,size=(100, 20),key='listbox2', enable_events=True)],
             [sg.Text(key='e-mail body',size=(35, 10))],                          
             [sg.Button('Send mail'),sg.Button('Edit mail'), sg.Button('Exit')],
                 ]  
@@ -78,8 +80,9 @@ while True:
     in_produkt = values['produkt']
     in_art = values['art']
     in_status = values['status']
+
     #Tab2: Values zur Ausgabe
-    Kalenderwoche=values['KW']
+    K_W=values['KW']
 
 #Tab1 - - - - -
     #Suchfunktion
@@ -107,13 +110,14 @@ while True:
         window.FindElement('listbox').Update('')
 #Tab2 - - - - -  
     if event == 'OK':
-        window.FindElement('e-mail body').Update('')
-        mails = search_data(Kalenderwoche)
-        window.FindElement('e-mail body').Update(mails)
+        window.FindElement('listbox2').Update('')
+        mails = suche_KW(K_W)
+        window.FindElement('listbox2').Update(header+mails)
     if event == 'Send mail':
         send_mail()
     if event == 'Edit mail':
-        show_mail()
+        mails = show_mail(K_W)
+        show_mail(header+mails)
     if event == 'Exit':
         window.Close()
 

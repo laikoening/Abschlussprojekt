@@ -99,40 +99,40 @@ def get_day(tag):
 
 
 #Lenas Funktonen
-def Kalenderwoche(KW):
+
+def Kalenderwoche():
     data=get_data()
+    x=[]
     liste={}
-    i = 0
-    j = len(data)
-    while i < j:
-        for value in data:
-            day, month, year = (int(n) for n in value[3].split('.'))
-            X_Woche = datetime.date(year, month, day)           
-            #week_number = X_Woche.isocalendar()[1]
-            #liste[week_number]=data[i][0:9]
-            #if KW == week_number:
-                #print('*****') 
-            liste[X_Woche.strftime("%V")]=data[i][0:9]
-            if KW == liste.keys():
-                print(liste.get(KW))
-            else:
-                print('no data')
-        i=i+1
-    #print(liste)
-
-
-def message_body():
-    data=get_data()
-    liste = {} 
+    for value in data:
+        day, month, year = (int(n) for n in value[3].split('.'))
+        X_Woche = datetime.date(year, month, day)   
+        week_number = X_Woche.isocalendar()[1] 
+        liste[week_number]=value[0:9] 
+    for key,value in liste.items(): 
+        temp= [key,value]
+        x.append(temp)       
+        #liste.append(value[0:9])
+        #liste.insert(10,week_number)
+        #print(liste)
+        #if KW in liste.keys():
+    #print(x)
+    return(x)
+        #else:
+         #   err='no data'
+          #  return(err)
+        #return(x)
+def suche_KW(KW):
+    KW = int(KW)
+    liste=Kalenderwoche() 
+    x=[]
     i=0
-    while i< len(data):
-        for value in data:
-            key=value[2]
-            liste[key] = value[4]+";"+value[5]
-        if  data == None:
-            print("no data")
+    while i<len(liste):
+        if liste[i][0]==KW:
+            x.append(liste[i][1:9])
         i=i+1
-    print(liste)
+    return(x)
+
 
 def send_mail():
        
@@ -142,28 +142,29 @@ def send_mail():
     mail.Subject = 'Message subjeact'       
     mail.Body = 'Message body'                             # take text from "Buchungsliste"
     mail.Send()
-#E-Mail anschauen 
-#    
-def show_mail():
-    text=['1','2','3','4']
+
+#E-Mail anschauen   
+def show_mail(KW):
+    text = suche_KW(KW)
+    print(text)
     outlook = win32.Dispatch('outlook.application')
     mail = outlook.CreateItem(0)                           # outlook MailItem == 0
     mail.To = 'olena.pokotilova@gmail.com'
     mail.Subject = 'Message subject'       
     #mail.Body = '\n'.join(text)   # take text from "Buchungsliste" 
     #body = '\n'.join('%s, %s' % pair for pair in mylist)
-    mail.Body = "\n Tag ... :".join(text)
+   # mail.Body = "  ".join(text[0][0])
+    mail.Body = "Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: \n #{2}, {3} \n {4} - {5} Uhr , {8} \n MfG \n Kai Löning ".format(*text[0][0])
     mail.Display(True)                                     # show and edit mail 
+    
+
 
 
 
 
 #while True:
-    #action= input('test')
- 
+   # action= input('test')
     #if action== 't':
-       # Kalenderwoche(KW=int(input('Geben Sie die Kalenderwoche ein: ')))
-       # show_mail()
-    
-
-
+        #message_body()
+       # show_mail(3)
+    #show_mail()
