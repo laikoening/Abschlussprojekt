@@ -38,7 +38,7 @@ tab1_layout = [[sg.Text('Geben Sie einen Suchbegriff ein:')],
 tab2_layout = [ [sg.Text('Geben Sie die Kalenderwoche ein:')],
             [sg.InputText(size=(20,10), key='KW'), sg.Button('OK')],
             [sg.Listbox(mails,size=(100, 20),key='listbox2', enable_events=True)],
-            [sg.Text(key='e-mail body',size=(35, 10))],                          
+            #[sg.Text(key='e-mail body',size=(35, 10))],                          
             [sg.Button('Send mail'),sg.Button('Edit mail'), sg.Button('Exit')],
                 ]  
 #Tab3 - Raum Meldungen
@@ -117,7 +117,7 @@ while True:
         send_mail()
     if event == 'Edit mail':
         mails = show_mail(K_W)
-        show_mail(header+mails)
+        show_mail(mails)
     if event == 'Exit':
         window.Close()
 
