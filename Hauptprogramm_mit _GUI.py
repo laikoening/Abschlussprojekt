@@ -4,13 +4,11 @@ from Dateihandle import search_data
 from Dateihandle import get_data
 from Dateihandle import save_data
 from Dateihandle import delete_data
+from Dateihandle import get_day
 from Dateihandle import send_mail
 from Dateihandle import show_mail
-<<<<<<< HEAD
 from Dateihandle import Kalenderwoche
-=======
-from Dateihandle import get_day
->>>>>>> 0850d366d7bf9c3e36a133b7965f8a6555f3c101
+from Dateihandle import suche_KW
 
 import json
 
@@ -113,12 +111,13 @@ while True:
 #Tab2 - - - - -  
     if event == 'OK':
         window.FindElement('listbox2').Update('')
-        mails = Kalenderwoche(K_W)
-        window.FindElement('listbox2').Update(mails)
+        mails = suche_KW(K_W)
+        window.FindElement('listbox2').Update(header+mails)
     if event == 'Send mail':
         send_mail()
     if event == 'Edit mail':
-        show_mail()
+        mails = show_mail(K_W)
+        show_mail(header+mails)
     if event == 'Exit':
         window.Close()
 
