@@ -9,8 +9,13 @@ from Dateihandle import send_mail
 from Dateihandle import show_mail
 from Dateihandle import Kalenderwoche
 from Dateihandle import suche_KW
+<<<<<<< HEAD
 from Dateihandle import get_highest_id
 
+=======
+from Dateihandle import raum_body
+ 
+>>>>>>> 139029c5782cda974bdf8033e1e637075568f870
 import json
 
 #Konfigurationsdatei
@@ -24,6 +29,7 @@ hid = get_highest_id()
 choices =[] #Tab1: Liste der Listbox
 header = ["ID  Wochentag Datum  Start  Ende  Person  Produktion  Art  Status"] #Tab2: Header für Table
 mails = [] #Tab 2: Liste mit Buchungen 
+raum =[]  #Tab 3: Liste mit Buchungen (Räume)
 
 #Design des Fenstern
 #sg.theme_previewer() #show all themes
@@ -39,12 +45,18 @@ tab1_layout = [[sg.Text('Geben Sie einen Suchbegriff ein:')],
 #Tab2 - Wöchentliche Meldungen
 tab2_layout = [ [sg.Text('Geben Sie die Kalenderwoche ein:')],
             [sg.InputText(size=(20,10), key='KW'), sg.Button('OK')],
-            [sg.Listbox(mails,size=(100, 20),key='listbox2', enable_events=True)],
+            [sg.Text('Wollen Sie eine E-Mail mit der folgenden Buchungsliste senden? ' )],
+            [sg.Listbox(mails,size=(100, 15),key='listbox2', enable_events=True)],
             #[sg.Text(key='e-mail body',size=(35, 10))],                          
-            [sg.Button('Send mail'),sg.Button('Edit mail'), sg.Button('Exit')],
+            [sg.Button('Send mail'),sg.Button('Edit mail'), sg.Button('Clear')],
                 ]  
 #Tab3 - Raum Meldungen
-tab3_layout = [[sg.T('Hier arbeitet Olena gerade dran.')]] 
+tab3_layout = [[sg.Text('Geben Sie die Kalenderwoche ein:')],
+            [sg.InputText(size=(20,10), key='KW_1'), sg.Button('Übernehmen')],
+            [sg.Text('Gebuchte Räume für folgenden Woche :' )],
+            [sg.Listbox(mails,size=(100, 15),key='listbox3', enable_events=True)],
+            [sg.Button('Entf')],
+                ] 
 
 #Tab4 - Eingabe
 tab4_layout = [[sg.T('Hier können weitere Raumbuchungsanfragen erstellt werden.')],
@@ -86,6 +98,10 @@ while True:
     #Tab2: Values zur Ausgabe
     K_W=values['KW']
 
+    #Tab3: Values zur Ausgabe
+    K_W1=values['KW_1']
+
+
 #Tab1 - - - - -
     #Suchfunktion
     if event == 'Suchen':  
@@ -110,18 +126,33 @@ while True:
     #Leeren der Liste
     if event == 'Liste Leeren': 
         window.FindElement('listbox').Update('')
-#Tab2 - - - - -  
+
+#Tab2 - - - - - 
+    #Suche von Buchungen in Abhängigkeit von der  Kalenderwoche
     if event == 'OK':
         window.FindElement('listbox2').Update('')
         mails = suche_KW(K_W)
         window.FindElement('listbox2').Update(header+mails)
+    # Senden E-mail mit Buchungsliste (Abhängig von der  Kalenderwoche)
     if event == 'Send mail':
-        send_mail()
+        send_mail(K_W)
+    # Möglichkeit, E-Mails vor dem Senden zu korrigieren 
     if event == 'Edit mail':
-        mails = show_mail(K_W)
-        show_mail(mails)
-    if event == 'Exit':
-        window.Close()
+        show_mail(K_W)
+        show_mail(header+K_W)
+    #Leeren der Liste
+    if event == 'Clear': 
+        window.FindElement('listbox2').Update('')   
+  
+#Tab3 - - - - - 
+    # Anzeige von gebuchten Räumen (Dautum + Zeit ) in Abhängigkeit  von der  Kalenderwoche
+    if event == 'Übernehmen':
+        window.FindElement('listbox3').Update('')
+        raum = raum_body(K_W1)
+        window.FindElement('listbox3').Update(raum)
+    #Leeren der Liste
+    if event == 'Entf': 
+        window.FindElement('listbox3').Update('')   
 
 #Tab4 - - - - -  
     #Eingabe neuer Eintrag
