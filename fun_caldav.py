@@ -1,9 +1,7 @@
 import csv
-#with open('BspListe.csv',encoding="utf8", errors='ignore') as file:
-    #reader = csv.reader(file)
-
-    #for row in reader:
-        #print(row)        
+from datetime import datetime
+import time
+     
 def get_data():
     while True:
         try:
@@ -19,16 +17,27 @@ def get_data():
 def get_values():  
     data=get_data()
     i=0
-    list=[]
+    list1=[] 
+    list2=[]
     for value in data:
-        print(value[3],value[4],value[5])
-        list.append(value[3]),
-        list.append(value[4])
-        list.append(value[5])
-        "A = {0}, B = {1}, C = {2}".format(*list)
-        
+        list1.append(value[3]+" "+value[4])
+        list2.append(value[3]+" "+value[5])
+
+            
     i=i+1
-    print(list)
+    print(list1)
+    print("----------------")
+    print(list2)
+    
+    #date string list to python datetime list
+    
+    date1 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list1]
+    print(date1)
+
+    date2 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list2]
+    print(date2)
+
+
 get_values()
 
 
