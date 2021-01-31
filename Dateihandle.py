@@ -91,6 +91,18 @@ def get_day(tag):
     tag = datetime.datetime.strptime(tag, '%d.%m.%Y')
     return tag.strftime('%A')
 
+# -------- ID Erstellen -------
+def get_highest_id():
+    data_cr = get_data()
+    i = 0
+    id = 0
+    while i < len(data_cr):
+        if int(data_cr[i][0]) >= id: 
+            id = int(data_cr[i][0]) #neue ID wird erst im Haupprogramm erstellt
+        i = i + 1
+    return id #gitb die höchste ID zurück
+
+
 #def prove_data():
 
 #def archive_data():
@@ -98,30 +110,23 @@ def get_day(tag):
 #def show_warnings():
 
 
-#Lenas Funktonen
+# ------- Kalenderwoche ermitteln -------
 
 def Kalenderwoche():
     data=get_data()
-    x=[]
-    liste={}
+    liste=[]
     for value in data:
-        day, month, year = (int(n) for n in value[3].split('.'))
-        X_Woche = datetime.date(year, month, day)   
-        week_number = X_Woche.isocalendar()[1] 
-        liste[week_number]=value[0:9] 
-    for key,value in liste.items(): 
-        temp= [key,value]
-        x.append(temp)       
-        #liste.append(value[0:9])
-        #liste.insert(10,week_number)
-        #print(liste)
-        #if KW in liste.keys():
-    #print(x)
-    return(x)
-        #else:
-         #   err='no data'
-          #  return(err)
-        #return(x)
+        try:
+            day, month, year = (int(n) for n in value[3].split('.'))
+            X_Woche = datetime.date(year, month, day)   
+            week_number = X_Woche.isocalendar()[1] 
+            x=[week_number,value[0:9]]
+            liste.append(x) 
+        except:
+            print("keine Treffer!")          
+    return(liste)
+ 
+# ------- Suche nach Kalenderwoche  -------
 def suche_KW(KW):
     KW = int(KW)
     liste=Kalenderwoche() 
@@ -131,40 +136,65 @@ def suche_KW(KW):
         if liste[i][0]==KW:
             x.append(liste[i][1:9])
         i=i+1
+        if liste is None:
+            return("keine Treffer!")
+        if KW == None:
+            return("keine Treffer!")
+    return(x)
+
+# ------- Text für E-Mail (Wochentliche Meldung) -------
+def mail_body (KW):
+    text = suche_KW(KW)
+    i=0
+    x=[]
+    while i<len(text):      
+        body = "\n #{2}, {3} \n {4} - {5} Uhr , {8} ".format(*text[i][0])
+        x.append(body)
+        i=i+1
+        #print(x)
     return(x)
 
 
-def send_mail():
-       
+#------- Liste mit gebuchten Räumen -------
+def raum_body (KW_1):
+    text = suche_KW(KW_1)
+    i=0
+    liste=[]
+    while i<len(text):      
+        body = "\n Raum: {1} , \n Datum : {2}, {3} \n Uhrzeit: {4} - {5} Uhr  ".format(*text[i][0])
+        liste.append(body)
+        i=i+1
+        #print(x)
+    return(liste)
+
+#------- E-Mail mit Buchungsliste (Abhängig von der  Kalenderwoche) senden -------
+
+def send_mail(KW):
+    x=mail_body(KW) 
     outlook = win32.Dispatch('outlook.application')
     mail = outlook.CreateItem(0)                           # outlook MailItem == 0
     mail.To = 'olena.pokotilova@gmail.com'
     mail.Subject = 'Message subjeact'       
-    mail.Body = 'Message body'                             # take text from "Buchungsliste"
+    mail.Body = " Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\n LG \n Kai Löning"
     mail.Send()
 
-#E-Mail anschauen   
+#------- E-Mail mit Buchungsliste (Abhängig von der  Kalenderwoche) vor dem Senden anschauen  -------
 def show_mail(KW):
-    text = suche_KW(KW)
-    print(text)
+    x=mail_body(KW)
     outlook = win32.Dispatch('outlook.application')
     mail = outlook.CreateItem(0)                           # outlook MailItem == 0
     mail.To = 'olena.pokotilova@gmail.com'
-    mail.Subject = 'Message subject'       
-    #mail.Body = '\n'.join(text)   # take text from "Buchungsliste" 
-    #body = '\n'.join('%s, %s' % pair for pair in mylist)
-   # mail.Body = "  ".join(text[0][0])
-    mail.Body = "Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: \n #{2}, {3} \n {4} - {5} Uhr , {8} \n MfG \n Kai Löning ".format(*text[0][0])
-    mail.Display(True)                                     # show and edit mail 
+    mail.Subject = 'Message subject' 
+    mail.Body = " Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\n LG \n Kai Löning"
+    mail.Display(True)                                   # show and edit mail
+
     
 
 
 
-
-
 #while True:
-   # action= input('test')
+    #action= input('test')
     #if action== 't':
-        #message_body()
-       # show_mail(3)
+        #print(Kalenderwoche())
+        #show_mail(5)
     #show_mail()
