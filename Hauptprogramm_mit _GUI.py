@@ -39,15 +39,17 @@ tab1_layout = [[sg.Text('Geben Sie einen Suchbegriff ein:')],
 #Tab2 - Wöchentliche Meldungen
 tab2_layout = [ [sg.Text('Geben Sie die Kalenderwoche ein:')],
             [sg.InputText(size=(20,10), key='KW'), sg.Button('OK')],
-            [sg.Listbox(mails,size=(100, 20),key='listbox2', enable_events=True)],
+            [sg.Text('Wollen Sie eine E-Mail mit der folgenden Buchungsliste senden? ' )],
+            [sg.Listbox(mails,size=(100, 15),key='listbox2', enable_events=True)],
             #[sg.Text(key='e-mail body',size=(35, 10))],                          
-            [sg.Button('Send mail'),sg.Button('Edit mail'), sg.Button('Exit')],
+            [sg.Button('Send mail'),sg.Button('Edit mail'), sg.Button('Clear')],
                 ]  
 #Tab3 - Raum Meldungen
 tab3_layout = [[sg.Text('Geben Sie die Kalenderwoche ein:')],
             [sg.InputText(size=(20,10), key='KW_1'), sg.Button('Übernehmen')],
             [sg.Text('Gebuchte Räume für folgenden Woche :' )],
-            [sg.Listbox(mails,size=(100, 20),key='listbox3', enable_events=True)],
+            [sg.Listbox(mails,size=(100, 15),key='listbox3', enable_events=True)],
+            [sg.Button('Entf')],
                 ] 
 
 #Tab4 - Eingabe
@@ -128,13 +130,17 @@ while True:
     if event == 'Edit mail':
         show_mail(K_W)
         show_mail(header+K_W)
-    if event == 'Exit':
-        window.Close()
+    if event == 'Clear': 
+        window.FindElement('listbox2').Update('')   
+  
 #Tab3 - - - - -  
     if event == 'Übernehmen':
         window.FindElement('listbox3').Update('')
         raum = raum_body(K_W1)
         window.FindElement('listbox3').Update(raum)
+    if event == 'Entf': 
+        window.FindElement('listbox3').Update('')   
+
 #Tab4 - - - - -  
     #Eingabe neuer Eintrag
     if event == 'ueber':
