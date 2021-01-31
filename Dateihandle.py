@@ -98,7 +98,7 @@ def get_day(tag):
 #def show_warnings():
 
 
-#Lenas Funktonen
+# ------- Kalenderwoche ermitteln -------
 
 def Kalenderwoche():
     data=get_data()
@@ -114,7 +114,7 @@ def Kalenderwoche():
             print("keine Treffer!")          
     return(liste)
  
-
+# ------- Suche nach Kalenderwoche  -------
 def suche_KW(KW):
     KW = int(KW)
     liste=Kalenderwoche() 
@@ -129,8 +129,8 @@ def suche_KW(KW):
         if KW == None:
             return("keine Treffer!")
     return(x)
-    
-# Text für E-Mail (Wochentliche Meldung)
+
+# ------- Text für E-Mail (Wochentliche Meldung) -------
 def mail_body (KW):
     text = suche_KW(KW)
     i=0
@@ -143,7 +143,7 @@ def mail_body (KW):
     return(x)
 
 
-#Text E-Mail(???) für gebuchte Räumen 
+#------- Liste mit gebuchten Räumen -------
 def raum_body (KW_1):
     text = suche_KW(KW_1)
     i=0
@@ -155,7 +155,7 @@ def raum_body (KW_1):
         #print(x)
     return(liste)
 
-
+#------- E-Mail mit Buchungsliste (Abhängig von der  Kalenderwoche) senden -------
 
 def send_mail(KW):
     x=mail_body(KW) 
@@ -166,7 +166,7 @@ def send_mail(KW):
     mail.Body = " Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\n LG \n Kai Löning"
     mail.Send()
 
-#E-Mail anschauen   
+#------- E-Mail mit Buchungsliste (Abhängig von der  Kalenderwoche) vor dem Senden anschauen  -------
 def show_mail(KW):
     x=mail_body(KW)
     outlook = win32.Dispatch('outlook.application')
@@ -177,8 +177,6 @@ def show_mail(KW):
     mail.Display(True)                                   # show and edit mail
 
     
-
-
 
 
 

@@ -120,24 +120,31 @@ while True:
     #Leeren der Liste
     if event == 'Liste Leeren': 
         window.FindElement('listbox').Update('')
-#Tab2 - - - - -  
+
+#Tab2 - - - - - 
+    #Suche von Buchungen in Abhängigkeit von der  Kalenderwoche
     if event == 'OK':
         window.FindElement('listbox2').Update('')
         mails = suche_KW(K_W)
         window.FindElement('listbox2').Update(header+mails)
+    # Senden E-mail mit Buchungsliste (Abhängig von der  Kalenderwoche)
     if event == 'Send mail':
         send_mail(K_W)
+    # Möglichkeit, E-Mails vor dem Senden zu korrigieren 
     if event == 'Edit mail':
         show_mail(K_W)
         show_mail(header+K_W)
+    #Leeren der Liste
     if event == 'Clear': 
         window.FindElement('listbox2').Update('')   
   
-#Tab3 - - - - -  
+#Tab3 - - - - - 
+    # Anzeige von gebuchten Räumen (Dautum + Zeit ) in Abhängigkeit  von der  Kalenderwoche
     if event == 'Übernehmen':
         window.FindElement('listbox3').Update('')
         raum = raum_body(K_W1)
         window.FindElement('listbox3').Update(raum)
+    #Leeren der Liste
     if event == 'Entf': 
         window.FindElement('listbox3').Update('')   
 
