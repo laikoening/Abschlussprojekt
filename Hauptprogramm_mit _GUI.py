@@ -9,6 +9,7 @@ from Dateihandle import send_mail
 from Dateihandle import show_mail
 from Dateihandle import Kalenderwoche
 from Dateihandle import suche_KW
+from Dateihandle import get_highest_id
 
 import json
 
@@ -19,6 +20,7 @@ with open("data_file.json") as json_data_file:
 tab4=jdata["tab4"]
 
 anfrage = [] #Tab4: Liste der Anfragen
+hid = get_highest_id()
 choices =[] #Tab1: Liste der Listbox
 header = ["ID  Wochentag Datum  Start  Ende  Person  Produktion  Art  Status"] #Tab2: Header für Table
 mails = [] #Tab 2: Liste mit Buchungen 
@@ -125,9 +127,10 @@ while True:
     #Eingabe neuer Eintrag
     if event == 'ueber':
         wtag = get_day(in_datum)
+        hid = hid + 1
         #check_data(in_raum, in_datum, in_start, in_ende)
-        anfrage.append(["2",in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
-        print(in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status)
+        anfrage.append([hid,in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
+        print(hid, in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status)
     #Speichern der Einträge
     if event == 'speichern': 
         save_data(data1 + anfrage)

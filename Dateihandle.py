@@ -91,6 +91,18 @@ def get_day(tag):
     tag = datetime.datetime.strptime(tag, '%d.%m.%Y')
     return tag.strftime('%A')
 
+# -------- ID Erstellen -------
+def get_highest_id():
+    data_cr = get_data()
+    i = 0
+    id = 0
+    while i < len(data_cr):
+        if int(data_cr[i][0]) >= id: 
+            id = int(data_cr[i][0]) #neue ID wird erst im Haupprogramm erstellt
+        i = i + 1
+    return id #gitb die höchste ID zurück
+
+
 #def prove_data():
 
 #def archive_data():
