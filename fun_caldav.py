@@ -25,17 +25,22 @@ def get_values():
 
             
     i=i+1
-    print(list1)
-    print("----------------")
-    print(list2)
+    #print(list1)
+    #print("----------------")
+    #print(list2)
     
     #date string list to python datetime list
     
     date1 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list1]
-    print(date1)
+    #print(date1)
 
-    date2 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list2]
-    print(date2)
+    #date2 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list2]
+    #print(date2)
+    print(date1[1])
+    #iso format 
+    some_date = date1[1]
+    iso_date_string = some_date.isoformat()
+    print(iso_date_string)
 
 
 get_values()
