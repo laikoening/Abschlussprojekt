@@ -124,11 +124,13 @@ def suche_KW(KW):
         if liste[i][0]==KW:
             x.append(liste[i][1:9])
         i=i+1
-        if not liste:
-            e = "keine Treffer!"
-            return e
+        if liste is None:
+            return("keine Treffer!")
+        if KW == None:
+            return("keine Treffer!")
     return(x)
-
+    
+# Text für E-Mail (Wochentliche Meldung)
 def mail_body (KW):
     text = suche_KW(KW)
     i=0
@@ -137,8 +139,22 @@ def mail_body (KW):
         body = "\n #{2}, {3} \n {4} - {5} Uhr , {8} ".format(*text[i][0])
         x.append(body)
         i=i+1
-        print(x)
+        #print(x)
     return(x)
+
+
+#Text E-Mail(???) für gebuchte Räumen 
+def raum_body (KW_1):
+    text = suche_KW(KW_1)
+    i=0
+    liste=[]
+    while i<len(text):      
+        body = "\n Raum: {1} , \n Datum : {2}, {3} \n Uhrzeit: {4} - {5} Uhr  ".format(*text[i][0])
+        liste.append(body)
+        i=i+1
+        #print(x)
+    return(liste)
+
 
 
 def send_mail(KW):
