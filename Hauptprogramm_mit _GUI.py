@@ -11,7 +11,8 @@ from Dateihandle import Kalenderwoche
 from Dateihandle import suche_KW
 from Dateihandle import get_highest_id
 from Dateihandle import raum_body
- 
+from Dateihandle import check_vacancy
+
 import json
 
 #Konfigurationsdatei
@@ -64,7 +65,7 @@ tab4_layout = [[sg.T('Hier können weitere Raumbuchungsanfragen erstellt werden.
                 [sg.InputText(key='person', size=(22,200)), sg.InputText(key = 'produkt', size=(22,200)),
                 sg.Drop(values= tab4["droplist2"], key='art', size=(20,200)),
                 sg.Drop(values = tab4["droplist3"], key='status', size=(20,200))],
-                
+                #popup frage
                 [sg.B('Anfrage übernehmen', key= 'ueber')],
                 [sg.Output(key = 'Output_Ein')],
                 [sg.B('Anfrage(n) speichern', key = 'speichern')]]
@@ -96,7 +97,6 @@ while True:
 
     #Tab3: Values zur Ausgabe
     K_W1=values['KW_1']
-
 
 #Tab1 - - - - -
     #Suchfunktion
@@ -153,11 +153,14 @@ while True:
 #Tab4 - - - - -  
     #Eingabe neuer Eintrag
     if event == 'ueber':
-        wtag = get_day(in_datum)
-        hid = hid + 1
-        #check_data(in_raum, in_datum, in_start, in_ende)
-        anfrage.append([hid,in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
-        print(hid, in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status)
+        check = check_vacancy(in_raum, in_datum, in_start, in_ende)
+        if check is not False : #Popup Warnung
+            sg.popup("Raum schon belegt von:", check)
+        else: #Speicherung in der Daten Templiste
+            wtag = get_day(in_datum)
+            hid = hid + 1
+            anfrage.append([hid,in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
+            print(hid, in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status)
     #Speichern der Einträge
     if event == 'speichern': 
         save_data(data1 + anfrage)

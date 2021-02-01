@@ -102,7 +102,26 @@ def get_highest_id():
         i = i + 1
     return id #gitb die höchste ID zurück
 
-#def check_data():
+# ------- Zeitraum überprüfen -------
+def check_vacancy(in_raum, in_datum, in_start, in_ende):
+    data_va = get_data()
+    i = 0
+    while i < len(data_va):
+        if data_va[i][3] == in_datum: #Verglich Datum
+            if data_va[i][1] == in_raum: #Vergleich Raum
+                #Umwanldung der String in Time
+                ein_start = time.strptime(in_start, "%H:%M") #Startzeit Eingabe
+                ein_ende = time.strptime(in_ende, "%H:%M") #Endzeit Eingabe
+                tab_start= time.strptime(data_va[i][4], "%H:%M") #Startzeit Tabelle
+                tab_ende = time.strptime(data_va[i][5], "%H:%M") #Endzeit Tabelle
+                if (ein_ende < tab_ende) and (tab_start < ein_ende): #Zeitraum kleiner und/oder mittendrin
+                    return data_va[i] #Schleifenende und Rückgabe des Tabelleneintrags 
+                elif (ein_start < tab_ende) and (ein_start > tab_start): #größter und mittendrin 
+                    return data_va[i]
+                elif (ein_start < tab_start) and (ein_ende > tab_ende): #einrahmend
+                    return data_va[i]
+        i = i +1
+    return False
 
 #def archive_data():
 
@@ -151,7 +170,6 @@ def mail_body (KW):
         i=i+1
         #print(x)
     return(x)
-
 
 #------- Liste mit gebuchten Räumen -------
 def raum_body (KW_1):
