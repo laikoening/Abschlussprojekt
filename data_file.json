@@ -4,8 +4,8 @@
     },
 
     "tab4": {
-        "droplist1":["Buehne","KLEM","155","136"],
-        "droplist2":["Auffuehrung","Auswahlworkshop","Improtheater","Probe","Workshop", "Sonstiges"],
+        "droplist1":["Buehne","KLEM","155","136", "013","009", "022", "122", "117", "222"],
+        "droplist2":["Auffuehrung","Auswahlworkshop","Improtheater","Probe","Workshop"],
         "droplist3":["unbearbeitet","angefragt","bestaetig"]
     }
 
