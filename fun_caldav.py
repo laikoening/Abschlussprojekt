@@ -60,12 +60,12 @@ def get_values():
 
 
     #trying to put data from the list into calendar dtstart
+    
+
+    
     cal = Calendar()
     cal.add('prodid', '-//My calendar product//mxm.dk//')
     cal.add('version', '2.0')
-
-    event = Event()
-    j=0
     for y in date1:
         print(y,type(y))
 
@@ -74,14 +74,16 @@ def get_values():
         with_timezone = timezone.localize(without_timezone)
         print(with_timezone)
 
+        event = Event()
+        
         event.add('summary', 'Python meeting about calendaring')
-        event.add('dtstart', with_timezone)#
+        event.add('dtstart', with_timezone)
         event.add('dtend', datetime(2005,4,4,10,0,0,tzinfo=UTC))
         event.add('dtstamp', datetime(2005,4,4,0,10,0,tzinfo=UTC))
         event['uid'] = '20050115T101010/27346262376@mxm.dk'
         event.add('priority', 5)
         cal.add_component(event)
-    j=j+1
+    
     f = open('example.ics', 'wb')
     f.write(cal.to_ical())
     f.close()
