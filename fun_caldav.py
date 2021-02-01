@@ -34,7 +34,8 @@ def get_values():
     #print(list1)
     #print("----------------")
     #print(list2)
-    print(list3)
+    #print(list3)
+    print(type(list3[1]))
     #date string list to python datetime list
     date1 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list1]
     #print(date1)
@@ -68,6 +69,7 @@ def get_values():
         timezone = pytz.timezone("UTC")
         with_timezone = timezone.localize(without_timezone)
         #print(with_timezone)
+        print(type(with_timezone))
         without_time = date2[y]
         timezone = pytz.timezone("UTC")
         with_time = timezone.localize(without_time)
@@ -77,7 +79,7 @@ def get_values():
         event.add('dtstart', with_timezone)
         event.add('dtend', with_time)
         event.add('dtstamp', with_timezone)
-        #event['uid'] = '20050115T101010/27346262376@mxm.dk'
+        event['uid'] = '20050115T101010/27346262376@mxm.dk'
         event.add('priority', 5)
         cal.add_component(event)
     
