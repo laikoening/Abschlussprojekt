@@ -22,7 +22,7 @@ with open("data_file.json") as json_data_file:
 tab4=jdata["tab4"]
 
 anfrage = [] #Tab4: Liste der Anfragen
-hid = get_highest_id()
+hid = get_highest_id() #Tab4: Holt höchste ID aus Buchungsliste
 choices =[] #Tab1: Liste der Listbox
 header = ["ID  Wochentag Datum  Start  Ende  Person  Produktion  Art  Status"] #Tab2: Header für Table
 mails = [] #Tab 2: Liste mit Buchungen 
@@ -60,8 +60,12 @@ tab4_layout = [[sg.T('Hier können weitere Raumbuchungsanfragen erstellt werden.
                #[sg.Radio('Einfachanfragen     ', "anfrage1", default=True, size=(10,1)), sg.Radio('Mehrfachanfragen', "anfrage2")],
                 
                 #Infos zur Raumanfrage
+                #Beschriftung:
+                [sg.Text('Raumwunsch:', size=(19,0)), sg.Text('Datum:', size=(19,0)), sg.Text('Startzeit:', size=(19,0)),sg.Text('Endzeit:', size=(20,0))],
                 [sg.Drop(values = tab4["droplist1"], key='raum', size=(20,200)),
-                sg.Input('Datum',key='datum', size=(22,200)), sg.InputText(key='start', size=(22,200)),sg.InputText(key='ende', size=(22,200))],
+                sg.Input(key='datum', size=(22,200)), sg.InputText(key='start', size=(22,200)),sg.InputText(key='ende', size=(22,200))],
+                #Beschriftung
+                [sg.Text('Verantwortlicher:', size=(19,0)), sg.Text('Produktion:', size=(19,0)), sg.Text('Veranstaltungsart:', size=(19,0)),sg.Text('Status:', size=(20,0))],
                 [sg.InputText(key='person', size=(22,200)), sg.InputText(key = 'produkt', size=(22,200)),
                 sg.Drop(values= tab4["droplist2"], key='art', size=(20,200)),
                 sg.Drop(values = tab4["droplist3"], key='status', size=(20,200))],
@@ -158,7 +162,7 @@ while True:
             sg.popup("Raum schon belegt von:", check)
         else: #Speicherung in der Daten Templiste
             wtag = get_day(in_datum)
-            hid = hid + 1
+            hid = hid + 1 #höchste ID +1
             anfrage.append([hid,in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])
             print(hid, in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status)
     #Speichern der Einträge
@@ -166,6 +170,7 @@ while True:
         save_data(data1 + anfrage)
         sg.popup("Anfragen gespeichert")
         anfrage = []
+
 #Programm beenden - - - - -
     if event == sg.WIN_CLOSED: 
         break
