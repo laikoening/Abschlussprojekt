@@ -29,7 +29,7 @@ def get_values():
     for value in data:
         list1.append(value[3]+" "+value[4])
         list2.append(value[3]+" "+value[5])  
-        list3.append(value[8])         
+        list3.append(value[7]+','+value[6]+','+ value[8])         
     i=i+1
     #print(list1)
     #print("----------------")
@@ -37,7 +37,7 @@ def get_values():
     print(list3)
     #date string list to python datetime list
     date1 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list1]
-    print(date1)
+    #print(date1)
     print("-----------")
     #print(date1[1])
     date2 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list2]
