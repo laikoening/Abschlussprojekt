@@ -80,8 +80,6 @@ def get_values():
 get_values()
 
 
-
-
  
       
 
