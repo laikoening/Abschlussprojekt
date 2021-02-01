@@ -38,7 +38,7 @@ def get_values():
     print(date1)
     print("-----------")
     #print(date1[1])
-    #date2 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list2]
+    date2 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list2]
     #print(date2)
     #print(date1[1])
 
@@ -60,17 +60,21 @@ def get_values():
     cal.add('prodid', '-//My calendar product//mxm.dk//')
     cal.add('version', '2.0')
 
-    for y in date1:    
+    for y in range(len(date1)) :    
         #print(y,type(y))
-        without_timezone = y
+        without_timezone = date1[y]
         timezone = pytz.timezone("UTC")
         with_timezone = timezone.localize(without_timezone)
         #print(with_timezone)
+        without_time = date2[y]
+        timezone = pytz.timezone("UTC")
+        with_time = timezone.localize(without_time)
+
         event = Event()      
         event.add('summary', 'Python meeting about calendaring')
         event.add('dtstart', with_timezone)
-        event.add('dtend', datetime(2005,4,4,10,0,0,tzinfo=UTC))
-        event.add('dtstamp', datetime(2005,4,4,10,0,0,tzinfo=UTC))
+        event.add('dtend', with_time)
+        event.add('dtstamp', with_timezone)
         event['uid'] = '20050115T101010/27346262376@mxm.dk'
         event.add('priority', 5)
         cal.add_component(event)
