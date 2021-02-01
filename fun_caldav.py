@@ -25,14 +25,16 @@ def get_values():
     i=0
     list1=[] 
     list2=[]
+    list3=[]
     for value in data:
         list1.append(value[3]+" "+value[4])
-        list2.append(value[3]+" "+value[5])           
+        list2.append(value[3]+" "+value[5])  
+        list3.append(value[8])         
     i=i+1
     #print(list1)
     #print("----------------")
     #print(list2)
-    
+    print(list3)
     #date string list to python datetime list
     date1 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list1]
     print(date1)
@@ -71,7 +73,7 @@ def get_values():
         with_time = timezone.localize(without_time)
 
         event = Event()      
-        event.add('summary', 'Python meeting about calendaring')
+        event.add('summary', list3[y])
         event.add('dtstart', with_timezone)
         event.add('dtend', with_time)
         event.add('dtstamp', with_timezone)
