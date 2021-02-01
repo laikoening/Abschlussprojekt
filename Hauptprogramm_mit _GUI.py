@@ -9,13 +9,9 @@ from Dateihandle import send_mail
 from Dateihandle import show_mail
 from Dateihandle import Kalenderwoche
 from Dateihandle import suche_KW
-<<<<<<< HEAD
 from Dateihandle import get_highest_id
-
-=======
 from Dateihandle import raum_body
  
->>>>>>> 139029c5782cda974bdf8033e1e637075568f870
 import json
 
 #Konfigurationsdatei

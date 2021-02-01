@@ -102,13 +102,11 @@ def get_highest_id():
         i = i + 1
     return id #gitb die höchste ID zurück
 
-
-#def prove_data():
+#def check_data():
 
 #def archive_data():
 
 #def show_warnings():
-
 
 # ------- Kalenderwoche ermitteln -------
 
