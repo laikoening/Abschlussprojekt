@@ -77,7 +77,7 @@ def get_values():
         event.add('dtstart', with_timezone)
         event.add('dtend', with_time)
         event.add('dtstamp', with_timezone)
-        event['uid'] = '20050115T101010/27346262376@mxm.dk'
+        #event['uid'] = '20050115T101010/27346262376@mxm.dk'
         event.add('priority', 5)
         cal.add_component(event)
     
