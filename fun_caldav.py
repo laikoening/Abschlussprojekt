@@ -27,21 +27,17 @@ def get_values():
     list2=[]
     for value in data:
         list1.append(value[3]+" "+value[4])
-        list2.append(value[3]+" "+value[5])
-
-            
+        list2.append(value[3]+" "+value[5])           
     i=i+1
     #print(list1)
     #print("----------------")
     #print(list2)
     
     #date string list to python datetime list
-    
     date1 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list1]
     print(date1)
     print("-----------")
     #print(date1[1])
-
     #date2 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list2]
     #print(date2)
     #print(date1[1])
@@ -58,24 +54,19 @@ def get_values():
     #with_timezone = timezone.localize(without_timezone)
     #print(with_timezone)
 
-
-    #trying to put data from the list into calendar dtstart
-    
-
+    #put data from the list into calendar dtstart
     
     cal = Calendar()
     cal.add('prodid', '-//My calendar product//mxm.dk//')
     cal.add('version', '2.0')
-    for y in date1:
-        print(y,type(y))
 
+    for y in date1:    
+        #print(y,type(y))
         without_timezone = y
         timezone = pytz.timezone("UTC")
         with_timezone = timezone.localize(without_timezone)
-        print(with_timezone)
-
-        event = Event()
-        
+        #print(with_timezone)
+        event = Event()      
         event.add('summary', 'Python meeting about calendaring')
         event.add('dtstart', with_timezone)
         event.add('dtend', datetime(2005,4,4,10,0,0,tzinfo=UTC))
