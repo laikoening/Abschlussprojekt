@@ -8,7 +8,6 @@ from pytz import UTC # timezone
 import vobject
 import pytz
 
-
 def get_data():
     while True:
         try:
@@ -40,6 +39,8 @@ def get_values():
     
     date1 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list1]
     print(date1)
+    print("-----------")
+    print(date1[1])
 
     #date2 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list2]
     #print(date2)
@@ -51,11 +52,11 @@ def get_values():
     #print(iso_date_string)
 
     #add timezone to datetime
-    without_timezone = date1[1]
 
-    timezone = pytz.timezone("UTC")
-    with_timezone = timezone.localize(without_timezone)
-    print(with_timezone)
+    #without_timezone = date1[1]
+    #timezone = pytz.timezone("UTC")
+    #with_timezone = timezone.localize(without_timezone)
+    #print(with_timezone)
 
 
     #trying to put data from the list into calendar dtstart
@@ -64,18 +65,26 @@ def get_values():
     cal.add('version', '2.0')
 
     event = Event()
-    event.add('summary', 'Python meeting about calendaring')
-    event.add('dtstart', with_timezone)
-    event.add('dtend', datetime(2005,4,4,10,0,0,tzinfo=UTC))
-    event.add('dtstamp', datetime(2005,4,4,0,10,0,tzinfo=UTC))
-    event['uid'] = '20050115T101010/27346262376@mxm.dk'
-    event.add('priority', 5)
+    j=0
+    for y in date1:
+        print(y,type(y))
 
-    cal.add_component(event)
+        without_timezone = y
+        timezone = pytz.timezone("UTC")
+        with_timezone = timezone.localize(without_timezone)
+        print(with_timezone)
+
+        event.add('summary', 'Python meeting about calendaring')
+        event.add('dtstart', with_timezone)#
+        event.add('dtend', datetime(2005,4,4,10,0,0,tzinfo=UTC))
+        event.add('dtstamp', datetime(2005,4,4,0,10,0,tzinfo=UTC))
+        event['uid'] = '20050115T101010/27346262376@mxm.dk'
+        event.add('priority', 5)
+        cal.add_component(event)
+    j=j+1
     f = open('example.ics', 'wb')
     f.write(cal.to_ical())
     f.close()
-
 
 get_values()
 
