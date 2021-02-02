@@ -76,7 +76,6 @@ def get_values():
         timezone = pytz.timezone("UTC")
         with_time = timezone.localize(without_time)
         
-
         event = Event()      
         event.add('summary', list3[y])
         event.add('dtstart', with_timezone)
