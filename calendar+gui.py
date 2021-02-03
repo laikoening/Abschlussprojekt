@@ -1,3 +1,4 @@
+import PySimpleGUI as sg 
 import csv
 from datetime import datetime
 from icalendar import Calendar, Event
@@ -44,19 +45,18 @@ def get_values():
         without_timezone = date1[y]
         timezone = pytz.timezone("UTC")
         with_timezone = timezone.localize(without_timezone)
-        #print(with_timezone)
-        #print(type(with_timezone))
+        print(with_timezone)
+        print(type(with_timezone))
         without_time = date2[y]
         timezone = pytz.timezone("UTC")
         with_time = timezone.localize(without_time)
         
         event = Event()      
-        
-        event.add('dtstart', date1[y])
+    
+        event.add('dtstart', with_timezone)
         event['dtstart'].to_ical()
         event["DTSTART"].params.clear()
-        #event.add("dtstart",pytz.utc.localize(date1[y]))
-        event.add('dtend', date2[y])
+        event.add('dtend', with_time)
         event["DTEND"].params.clear()
         event.add('dtstamp', with_timezone)
         event["DTSTAMP"].params.clear()
@@ -69,12 +69,38 @@ def get_values():
     f.write(cal.to_ical())
     f.close()
 
-get_values()
+#sg.theme_previewer() #show all themes
+sg.theme('DarkPurple7') #choose a theme    
+sg.SetOptions(element_padding=(10, 10))      
 
+    # ------ Menu Definition ------ #      
+menu_def = [['File', ['Open', 'Exit'  ]],           
+                ['Help', 'About...'], ]      
 
+    # ------ GUI Defintion ------ #      
+layout = [ [sg.Menu(menu_def, )],
+           [sg.Text('Application to parse data from csv to Nextcloud')],
+           [sg.InputText(key='Input')], 
+           [sg.B('To Output'), sg.B('Popup')], 
+           [sg.Output(), sg.B('Confirm'), sg.B('Exit')], 
+         ]      
+window = sg.Window('CSV to Nextcloud parser', layout)
  
-      
-
-
+    # ------ Loop & Process button menu choices ------ #      
+while True:      
+    event, values = window.read()      
+    if event == sg.WIN_CLOSED or event == 'Exit':      
+        break            
+    textInputs = values['Input'] 
+    if event == 'To Output':
+        get_values()   
+        print(textInputs)
+    if event == 'Popup':  
+        sg.popup('you entered:', textInputs) #popup is a GUI equivalent of a print statement
         
-        
+    # ------ Process menu choices ------ #      
+    if event == 'About...':      
+        sg.popup("1)For the application to work, click the 'Browse' Button and find....", "2) Click 'Confirm' button the path is correct")      
+    elif event == 'Open':      
+        filename = sg.popup_get_file('file to open', no_window=True)      
+        print(filename)      
