@@ -58,10 +58,11 @@ def get_values():
         end.value = list4[1][y]
         cal.vevent.add('uid').value = 'Sample UID'
         
-        icalstream = cal.serialize()
-        print (icalstream) 
+    #icalstream = cal.serialize()
+
+    #print (icalstream) 
         
-        f.write(icalstream)
+    f.write(cal)
     f.close()
    
 get_values()

@@ -51,13 +51,18 @@ def get_values():
         with_time = timezone.localize(without_time)
         
         event = Event()      
-        event.add('summary', list3[y])
-        event.add('dtstart', with_timezone)
+        
+        event.add('dtstart', date1[y])
+        event['dtstart'].to_ical()
+        event["DTSTART"].params.clear()
         #event.add("dtstart",pytz.utc.localize(date1[y]))
-        event.add('dtend', with_time)
+        event.add('dtend', date2[y])
+        event["DTEND"].params.clear()
         event.add('dtstamp', with_timezone)
-        event['uid'] = '20050115T101010/27346262376@mxm.dk'
-        event.add('priority', 5)
+        event["DTSTAMP"].params.clear()
+        #event['uid'] = '20050115T101010/27346262376@mxm.dk'
+        event.add('summary', list3[y])
+        #event.add('priority', 5)
         cal.add_component(event)
          
     f = open('examp.ics', 'wb')
