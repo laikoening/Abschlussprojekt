@@ -44,10 +44,6 @@ def get_values():
     list4.append(date2)
     list4.append(list3)
     print(list4)
-
-    #print(date2)
-    #print(date1[1])
-    #print(type(date1[1]))
     
     f = open('examp.ics', 'w')
     

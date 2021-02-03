@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 from icalendar import Calendar, Event
 from pytz import UTC # timezone
+import pytz
 import vobject
 
 def get_data():
