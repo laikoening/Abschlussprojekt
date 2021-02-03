@@ -50,8 +50,8 @@ def get_values():
     #print(type(date1[1]))
     
     f = open('examp.ics', 'w')
+    
     for y in range(len(list4[0])):
-
         cal = vobject.iCalendar()
         cal.add('vevent')
         cal.vevent.add('summary').value = list4[2][y]
