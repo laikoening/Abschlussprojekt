@@ -1,9 +1,7 @@
 import csv
 from datetime import datetime
 import time
-    
 from icalendar import Calendar, Event
-from datetime import datetime
 from pytz import UTC # timezone
 import vobject
 import pytz
