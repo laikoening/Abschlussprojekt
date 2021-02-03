@@ -19,7 +19,6 @@ def get_data():
           
 def get_values():  
     data=get_data()
-    i=0
     list1=[] 
     list2=[]
     list3=[]
@@ -27,7 +26,6 @@ def get_values():
         list1.append(value[3]+" "+value[4])
         list2.append(value[3]+" "+value[5])  
         list3.append(value[7]+','+value[6]+','+ value[8])         
-    i=i+1
     
     #date string list to python datetime list
     date1 = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list1]
