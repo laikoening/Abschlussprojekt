@@ -1,7 +1,6 @@
-import PySimpleGUI as sg 
 from datetime import datetime 
 import caldav 
-
+import vobject
 
 DTSTART = "20210129T060000Z" 
 DTEND = "20210129T230000Z" 
@@ -40,6 +39,14 @@ SUMMARY:Do the needful
 END:VEVENT
 END:VCALENDAR
 """)
-     
+    
+events_fetched = my_new_calendar.date_search(
+    start=datetime(2020, 1, 1), end=datetime(2022, 1, 1), expand=True)
+print(events_fetched[0].data)
+
+event = events_fetched[0]
+
+event.vobject_instance.vevent.summary.value = 'hello'
+event.save()
 
    
