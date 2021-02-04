@@ -73,11 +73,11 @@ def get_values():
 sg.theme('DarkPurple7') #choose a theme    
 sg.SetOptions(element_padding=(10, 10))      
 
-    # ------ Menu Definition ------ #      
+# menu definition     
 menu_def = [['File', ['Open', 'Exit'  ]],           
                 ['Help', 'About...'], ]      
 
-    # ------ GUI Defintion ------ #      
+#layout creation 
 layout = [ [sg.Menu(menu_def, )],
            [sg.Text('Application to parse data from csv to Nextcloud')],
            [sg.InputText(key='Input')], 
@@ -85,8 +85,8 @@ layout = [ [sg.Menu(menu_def, )],
            [sg.Output(), sg.B('Confirm'), sg.B('Exit')], 
          ]      
 window = sg.Window('CSV to Nextcloud parser', layout)
- 
-    # ------ Loop & Process button menu choices ------ #      
+
+#Loop for buttons choices    
 while True:      
     event, values = window.read()      
     if event == sg.WIN_CLOSED or event == 'Exit':      
@@ -98,7 +98,7 @@ while True:
     if event == 'Popup':  
         sg.popup('you entered:', textInputs) #popup is a GUI equivalent of a print statement
         
-    # ------ Process menu choices ------ #      
+    # Process menu choices  
     if event == 'About...':      
         sg.popup("1)For the application to work, click the 'Browse' Button and find....", "2) Click 'Confirm' button the path is correct")      
     elif event == 'Open':      
