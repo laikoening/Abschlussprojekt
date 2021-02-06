@@ -84,35 +84,38 @@ sg.theme('DarkPurple7') #choose a theme
 sg.SetOptions(element_padding=(10, 10))      
 
 # Menu definition     
-menu_def = [['Help', 'About...']]  
+menu_def = [['Help', 'About the application']]  
 
 #Layout creation 
 layout = [ [sg.Menu(menu_def, )],
            [sg.Text('Application to parse data from csv to Nextcloud')],
-           [sg.T('Enter the path to the SCV file'), sg.InputText(key='Input_SCV_path'), sg.FileBrowse(),
+           [sg.T('Enter the path to the csv file'), sg.InputText(key='Input_CSV_path'), sg.FileBrowse(),
             sg.B('Confirm', key='ConfirmPath')], 
            [sg.B('Create ics file')], 
-           [sg.Output(), sg.B('Exit')], 
+           [sg.Output(), sg.B('Exit')]
          ]      
 window = sg.Window('CSV to Nextcloud parser', layout)
 
 #Loop for buttons choices    
 while True:      
     event, values = window.read()   
-    scvPath = values['Input_SCV_path'] 
+    scvPath = values['Input_CSV_path'] 
     if event == 'ConfirmPath':
         scv_date = get_data_from_scv(scvPath)
         print(scv_date)
     if event == sg.WIN_CLOSED or event == 'Exit':      
         break            
-    textInputs = values['Input'] 
+     
     if event == 'Create ics file':
         start_time_str, end_time_str, SUMMARIS = get_values(scv_date)
         start_time, end_time = strings_to_datetime(start_time_str, end_time_str)
         create_calendar_with_events(start_time, end_time, SUMMARIS)
-        print(textInputs)
-        
-    # Process menu choices  
-    if event == 'About...':      
-        sg.popup("1)For the application to work, click the 'Browse' Button and find....", "2) Click 'Confirm' button the path is correct")      
   
+    # Process menu choices  
+    if event == 'About the application':      
+        sg.popup("1)For the application to work, click 'Browse' and select the requireed file", 
+                 "2) Click 'Confirm' button if the path is correct",
+                 "3)After that click the button 'Create isc file'",
+                 "4)Upload the created ics file to your Nextcloud calendar")      
+  
+window.close()
