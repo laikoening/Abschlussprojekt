@@ -84,7 +84,7 @@ sg.theme('DarkPurple7') #choose a theme
 sg.SetOptions(element_padding=(10, 10))      
 
 # Menu definition     
-menu_def = [['Help', 'About the application']]  
+menu_def = [['HELP', 'How to use the application']]  
 
 #Layout creation 
 layout = [ [sg.Menu(menu_def, )],
@@ -112,10 +112,10 @@ while True:
         create_calendar_with_events(start_time, end_time, SUMMARIS)
   
     # Process menu choices  
-    if event == 'About the application':      
-        sg.popup("1)For the application to work, click 'Browse' and select the requireed file", 
-                 "2) Click 'Confirm' button if the path is correct",
-                 "3)After that click the button 'Create isc file'",
-                 "4)Upload the created ics file to your Nextcloud calendar")      
+    if event == 'How to use the application':      
+        sg.popup("Step 1: For the application to work, click 'Browse' and select the requireed file", 
+                 "Step 2: Click 'Confirm' if the path is correct",
+                 "Step 3: Click  'Create isc file'",
+                 "Step 4: Upload the created ics file to your Nextcloud calendar")      
   
 window.close()
