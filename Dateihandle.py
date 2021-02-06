@@ -137,7 +137,7 @@ def Kalenderwoche():
             day, month, year = (int(n) for n in value[3].split('.'))
             X_Woche = datetime.date(year, month, day)   
             week_number = X_Woche.isocalendar()[1] 
-            x=[week_number,value[0:9]]
+            x=[week_number,value[0:10]]
             liste.append(x) 
         except:
             print("keine Treffer!")          
