@@ -39,7 +39,7 @@ def strings_to_datetime(list_with_dtstart_as_str,list_with_dtend_as_str):
     list_with_dtend_as_datetime = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list_with_dtend_as_str]
     return  list_with_dtstart_as_datetime, list_with_dtend_as_datetime
 
-#Function to create calendar  
+#Function to create calendar with events and save them as isc file
 def create_calendar_with_events(start_time, end_time, SUMMARIS):
 
     cal = Calendar()
@@ -47,7 +47,7 @@ def create_calendar_with_events(start_time, end_time, SUMMARIS):
     cal.add('prodid', '-//My calendar product//mxm.dk//')
     cal.add('version', '2.0')
     
-    #Loop for creationg events parsing data from 
+    #Loop for creationg events using usuing data from extracted lists from csv
     for y in range(len(start_time)) :    
 
     #Convert start time to start time with timezone
@@ -61,7 +61,7 @@ def create_calendar_with_events(start_time, end_time, SUMMARIS):
         timezone = pytz.timezone("UTC")
         with_time = timezone.localize(without_time)
 
-     #Create events
+     #Create new events 
         event = Event()      
         event.add('dtstart', with_timezone)
         event['dtstart'].to_ical()
@@ -79,6 +79,7 @@ def create_calendar_with_events(start_time, end_time, SUMMARIS):
     f.write(cal.to_ical())
     f.close()
 
+#Interface creation
 #sg.theme_previewer() #show all themes
 sg.theme('DarkPurple7') #choose a theme    
 sg.SetOptions(element_padding=(10, 10))      
