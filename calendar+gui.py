@@ -4,22 +4,21 @@ from datetime import datetime
 from icalendar import Calendar, Event
 from pytz import UTC # timezone
 import pytz
-import vobject
 
-def get_data():
-    while True:
-        try:
-            with open('BspListe.csv',encoding="utf8", errors='ignore') as file:
-                reader = csv.reader(file,delimiter=';')
-                data_get = []
-                for row in reader:
-                    data_get.append(row)
-            return data_get
-        except:
-            print("Datei nicht gefunden\n")
+def get_data_from_scv(csv_path):
+    try:
+        with open(rf"{csv_path}", encoding="utf8", errors='ignore') as file:
+            reader = csv.reader(file, delimiter=';')
+            data_get = []
+            for row in reader:
+                data_get.append(row)
+        return data_get
+    except:
+        print("Datei nicht gefunden\n")
+
           
-def get_values():  
-    data=get_data()
+def get_values(csv_data):  
+    data = csv_data
     list1=[] 
     list2=[]
     list3=[]
@@ -52,7 +51,6 @@ def get_values():
         with_time = timezone.localize(without_time)
         
         event = Event()      
-    
         event.add('dtstart', with_timezone)
         event['dtstart'].to_ical()
         event["DTSTART"].params.clear()
@@ -60,9 +58,9 @@ def get_values():
         event["DTEND"].params.clear()
         event.add('dtstamp', with_timezone)
         event["DTSTAMP"].params.clear()
-        #event['uid'] = '20050115T101010/27346262376@mxm.dk'
+        event['uid'] = str(y)
         event.add('summary', list3[y])
-        #event.add('priority', 5)
+        event.add('priority', 5)
         cal.add_component(event)
          
     f = open('examp.ics', 'wb')
@@ -80,6 +78,8 @@ menu_def = [['File', ['Open', 'Exit'  ]],
 #layout creation 
 layout = [ [sg.Menu(menu_def, )],
            [sg.Text('Application to parse data from csv to Nextcloud')],
+           [sg.T('Enter the path to the SCV file'), sg.InputText(key='Input_SCV_path'), sg.FileBrowse(),
+            sg.B('Confirm', key='ConfirmPath')],
            [sg.InputText(key='Input')], 
            [sg.B('To Output'), sg.B('Popup')], 
            [sg.Output(), sg.B('Confirm'), sg.B('Exit')], 
@@ -88,12 +88,16 @@ window = sg.Window('CSV to Nextcloud parser', layout)
 
 #Loop for buttons choices    
 while True:      
-    event, values = window.read()      
+    event, values = window.read()   
+    scvPath = values['Input_SCV_path'] 
+    if event == 'ConfirmPath':
+        scv_date = get_data_from_scv(scvPath)
+        print(scv_date)
     if event == sg.WIN_CLOSED or event == 'Exit':      
         break            
     textInputs = values['Input'] 
     if event == 'To Output':
-        get_values()   
+        get_values(scv_date)   
         print(textInputs)
     if event == 'Popup':  
         sg.popup('you entered:', textInputs) #popup is a GUI equivalent of a print statement
