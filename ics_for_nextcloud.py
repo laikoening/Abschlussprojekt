@@ -45,10 +45,10 @@ def get_values():
     list4.append(list3)
     print(list4)
     
-    f = open('examp.ics', 'w')
-    
+    f = open('example.ics', 'w')
+    cal = vobject.iCalendar()
     for y in range(len(list4[0])):
-        cal = vobject.iCalendar()
+       
         cal.add('vevent')
         cal.vevent.add('summary').value = list4[2][y]
         utc = vobject.icalendar.utc
@@ -57,12 +57,11 @@ def get_values():
         end = cal.vevent.add('dtend')
         end.value = list4[1][y]
         cal.vevent.add('uid').value = 'Sample UID'
-        
-    #icalstream = cal.serialize()
-
+        icalstream = cal.serialize()
+        f.write(icalstream)
     #print (icalstream) 
         
-    f.write(cal)
+   
     f.close()
    
 get_values()
