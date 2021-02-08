@@ -129,66 +129,69 @@ def check_vacancy(in_raum, in_datum, in_start, in_ende):
 
 # ------- Kalenderwoche ermitteln -------
 
-def Kalenderwoche():
-    data=get_data()
-    liste=[]
+def kalenderwoche():
+    data = get_data()
+    liste = []
     for value in data:
         try:
             day, month, year = (int(n) for n in value[3].split('.'))
             X_Woche = datetime.date(year, month, day) 
             week_number = X_Woche.isocalendar()[1] 
-            x=[week_number,year,value[0:10]]
+            x = [week_number, year, value]
             liste.append(x) 
         except:
-            print("keine Treffer!")          
-    return(liste)
-    #print(liste)
+            print("Fehlerhafter Eintrag!")          
+    return liste
  
 # ------- Suche nach Kalenderwoche  -------
-def suche_KW(KW,Jahr):
-    KW = int(KW)
-    Jahr = int(Jahr)
-    liste=Kalenderwoche() 
-    x=[]
-    i=0
-    while i<len(liste):
-        if liste[i][0]==KW and liste[i][1]==Jahr:
-            x.append(liste[i][2:9])
-        i=i+1
-        if liste is None:
-            return("keine Treffer!")
-        if KW == None:
-            return("keine Treffer!")
-    return(x)
-    #print(x)
+
+def suche_KW(KW, jahr):
+    liste = kalenderwoche() 
+    if len(liste) == 0:
+            return ["Keine Treffer!"]
+    x = []
+    for row in liste:
+        if row[0] == KW and row[1] == jahr:
+            x.append(row[2])
+
+    return x
 
 # ------- Text für E-Mail (Wochentliche Meldung) -------
 
-def text_for_mail_body (KW,Jahr,Status):
-    Status = str(Status)
-    text = suche_KW(KW,Jahr)
-    i=0
-    liste=[]
-    while i<len(text): 
-        if Status != None and Status==text[i][0][9]:
-            liste.append(text[i][0])
-        else: 
-            liste.append(text[i][0])
-        i=i+1
+def data_for_mail_body (KW, jahr, status):
+    data = suche_KW(KW, jahr)
+    liste = []
+    for row in data:
+        if status == '':
+            liste.append(row)
+        elif status == row[9]:
+            liste.append(row)
 
-    return(liste)
+    return liste
   
 
-def mail_body(KW,Jahr,Status):
-    text = text_for_mail_body(KW,Jahr,Status)
-    i=0
-    liste=[]
-    while i<len(text): 
+def sort_by_datetime(row):
+    day, month, year = (int(n) for n in row[3].split('.'))
+    return datetime.date(year, month, day)
+
+
+def mail_body(KW, jahr, status):
+    try:
+        KW = int(KW)
+        jahr = int(jahr)
+    except ValueError:
+        return ["Parameter inkorrekt!"]
+    data = data_for_mail_body(KW, jahr, status)
+    if len(data) == 0:
+        return ["Keine Treffer!"]
+    data.sort(key=sort_by_datetime)
+    liste = []
+    for row in data:
         #body = "\n Raum: {1} , \n Datum : {2}, {3} \n Uhrzeit: {4} - {5} Uhr  ".format(*text[i])
-        body = "\n #{2}, {3} \n {4} - {5} Uhr , {8} ".format(*text[i])
+        body = "\n #{2}, {3} \n {4} - {5} Uhr , {8} ".format(*row)
         liste.append(body)
-        i=i+1
-    return(liste)
+
+    return liste
 
 
 
@@ -210,24 +213,27 @@ def mail_body(KW,Jahr,Status):
 
 #------- E-Mail mit Buchungsliste (Abhängig von der  Kalenderwoche) senden -------
 
-def send_mail(KW,Jahr,Status):
-    x=mail_body(KW,Jahr,Status) 
-    outlook = win32.Dispatch('outlook.application')
-    mail = outlook.CreateItem(0)                           # outlook MailItem == 0
-    mail.To = 'olena.pokotilova@gmail.com'
-    mail.Subject = 'Veranstaltungen für die nächsten Woche' 
-    mail.Body = " Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\n LG \n Kai Löning"
-    mail.Send()
-
-#------- E-Mail mit Buchungsliste (Abhängig von der  Kalenderwoche) vor dem Senden anschauen  -------
-def show_mail(KW,Jahr,Status):
+def send_mail(KW, Jahr, Status, send):
     x=mail_body(KW,Jahr,Status)
     outlook = win32.Dispatch('outlook.application')
     mail = outlook.CreateItem(0)                           # outlook MailItem == 0
     mail.To = 'olena.pokotilova@gmail.com'
     mail.Subject = 'Veranstaltungen für die nächsten Woche' 
-    mail.Body = " Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\n LG \n Kai Löning"  
-    mail.Display(True)                                   # show and edit mail
+    mail.Body = " Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\n LG \n Kai Löning"
+    if send:
+        mail.Send()
+    else:
+        mail.Display(True)
+
+#------- E-Mail mit Buchungsliste (Abhängig von der  Kalenderwoche) vor dem Senden anschauen  -------
+# def show_mail(KW,Jahr,Status):
+#     x=mail_body(KW,Jahr,Status)
+#     outlook = win32.Dispatch('outlook.application')
+#     mail = outlook.CreateItem(0)                           # outlook MailItem == 0
+#     mail.To = 'olena.pokotilova@gmail.com'
+#     mail.Subject = 'Veranstaltungen für die nächsten Woche' 
+#     mail.Body = "Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\n LG \n Kai Löning"  
+#     mail.Display(True)                                   # show and edit mail
 
     
 
