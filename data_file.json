@@ -9,7 +9,7 @@
         "droplist3":["unbearbeitet","angefragt","bestaetig"],
         "droplist_jahr":["2019","2020","2021"],
         "droplist_jahr1":["2019","2020","2021"],
-        "droplist_status":[" ", "anfragen", "angefragt","ausstehend", "unbearbeitet"]
+        "droplist_status":["", "anfragen", "angefragt", "ausstehend", "unbearbeitet"]
     }
 
 }
