@@ -119,3 +119,4 @@ while True:
                  "Step 4: Upload the created ics file to your Nextcloud calendar")      
   
 window.close()
+
