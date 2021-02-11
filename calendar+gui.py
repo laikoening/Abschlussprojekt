@@ -96,7 +96,7 @@ layout = [ [sg.Menu(menu_def, )],
          ]      
 window = sg.Window('CSV to Nextcloud parser', layout)
 
-#Loop for buttons choices    
+#Loop to choose buttons  
 while True:      
     event, values = window.read()   
     scvPath = values['Input_CSV_path'] 
