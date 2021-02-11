@@ -4,7 +4,6 @@ import caldav
 '''After you have created an ics file and 
 uploaded it to the nextcloud, you can manage your events using the caldav library'''
 
-
 URL = "https://nextcloud05.webo.cloud/remote.php/dav" 
 UserName = "anna.gafurova@htw-dresden.de" 
 Password = "Tr" 
@@ -43,7 +42,7 @@ print(event.data)
 #event1 = events_fetched[2]
 #event1.delete()
 
-"""Add an event in your calendar;
+"""Add an event to your calendar;
 !NOTE:each event has own UID. As UID you can write any numbers or words;
 There should be no spaces (" ") after each line;
 Write DTSTART and DTEND in correct form: "yyyyMMdd'T'HHmmss'Z'" """
