@@ -1,8 +1,8 @@
 from datetime import datetime 
 import caldav 
 
-'''After you have created the file and 
-uploaded it to the nextcloud, you can manage your events using the caldava library'''
+'''After you have created an ics file and 
+uploaded it to the nextcloud, you can manage your events using the caldav library'''
 
 
 URL = "https://nextcloud05.webo.cloud/remote.php/dav" 
