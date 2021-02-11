@@ -6,7 +6,7 @@ uploaded it to the nextcloud, you can manage your events using the caldava libra
 
 URL = "https://nextcloud05.webo.cloud/remote.php/dav" 
 UserName = "anna.gafurova@htw-dresden.de" 
-Password = "Tratatagidro2017ABC@" 
+Password = "Tr" 
 
 #Setting up a caldav client object and a principal object
 client = caldav.DAVClient(url=URL, username=UserName, password=Password) 
