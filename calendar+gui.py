@@ -23,13 +23,14 @@ def get_values(csv_data):
     list_with_dtstart_as_str=[] 
     list_with_dtend_as_str=[]
     list_with_summaries=[]
-
+    list_with_location=[]
     for value in data:
         list_with_dtstart_as_str.append(value[3]+" "+value[4])
         list_with_dtend_as_str.append(value[3]+" "+value[5])  
-        list_with_summaries.append(value[7]+','+value[6]+','+ value[8])   
+        list_with_summaries.append(value[7]+','+value[6]+','+ value[8])
+        list_with_location.append(value[1])
 
-    return list_with_dtstart_as_str, list_with_dtend_as_str, list_with_summaries
+    return list_with_dtstart_as_str, list_with_dtend_as_str, list_with_summaries,list_with_location
 
 #Convert date string lists into python datetime lists
 def strings_to_datetime(list_with_dtstart_as_str,list_with_dtend_as_str):
@@ -39,7 +40,7 @@ def strings_to_datetime(list_with_dtstart_as_str,list_with_dtend_as_str):
     return  list_with_dtstart_as_datetime, list_with_dtend_as_datetime
 
 #Function to create calendar with events and save them as isc file
-def create_calendar_with_events(start_time, end_time, SUMMARIS):
+def create_calendar_with_events(start_time, end_time, SUMMARIS,LOCATION):
 
     cal = Calendar()
     cal.add('mothod','REQUEST')
@@ -71,6 +72,7 @@ def create_calendar_with_events(start_time, end_time, SUMMARIS):
         event["DTSTAMP"].params.clear()
         event['uid'] = str(y)
         event.add('summary', SUMMARIS[y])
+        event.add('location', LOCATION[y])
         event.add('priority', 5)
         cal.add_component(event)
     #Save events as ics file    
@@ -107,9 +109,9 @@ while True:
         break            
      
     if event == 'Create ics file':
-        start_time_str, end_time_str, SUMMARIS = get_values(scv_date)
+        start_time_str, end_time_str, SUMMARIS,LOCATION = get_values(scv_date)
         start_time, end_time = strings_to_datetime(start_time_str, end_time_str)
-        create_calendar_with_events(start_time, end_time, SUMMARIS)
+        create_calendar_with_events(start_time, end_time, SUMMARIS,LOCATION)
   
     # Process menu choices  
     if event == 'How to use the application':      
