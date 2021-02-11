@@ -31,7 +31,6 @@ def get_values(csv_data):
 
     return list_with_dtstart_as_str, list_with_dtend_as_str, list_with_summaries
 
-
 #Convert date string lists into python datetime lists
 def strings_to_datetime(list_with_dtstart_as_str,list_with_dtend_as_str):
     
