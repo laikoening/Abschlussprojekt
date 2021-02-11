@@ -6,7 +6,7 @@ from pytz import UTC # timezone
 import pytz
 
 #Function for getting data from csv file using file directory
-def get_data_from_scv(csv_path):
+def get_data_from_csv(csv_path):
     try:
         with open(rf"{csv_path}", encoding="utf8", errors='ignore') as file:
             reader = csv.reader(file, delimiter=';')
@@ -103,13 +103,13 @@ while True:
     event, values = window.read()   
     scvPath = values['Input_CSV_path'] 
     if event == 'ConfirmPath':
-        scv_date = get_data_from_scv(scvPath)
-        print(scv_date)
+        csv_date = get_data_from_csv(scvPath)
+        print(csv_date)
     if event == sg.WIN_CLOSED or event == 'Exit':      
         break            
      
     if event == 'Create ics file':
-        start_time_str, end_time_str, SUMMARIS,LOCATION = get_values(scv_date)
+        start_time_str, end_time_str, SUMMARIS,LOCATION = get_values(csv_date)
         start_time, end_time = strings_to_datetime(start_time_str, end_time_str)
         create_calendar_with_events(start_time, end_time, SUMMARIS,LOCATION)
   
