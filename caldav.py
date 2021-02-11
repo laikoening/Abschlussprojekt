@@ -4,6 +4,7 @@ import caldav
 '''After you have created the file and 
 uploaded it to the nextcloud, you can manage your events using the caldava library'''
 
+
 URL = "https://nextcloud05.webo.cloud/remote.php/dav" 
 UserName = "anna.gafurova@htw-dresden.de" 
 Password = "Tr" 
@@ -41,3 +42,23 @@ print(event.data)
 #Delete (for example) the second event from the calendar
 #event1 = events_fetched[2]
 #event1.delete()
+
+"""Add an event in your calendar;
+!NOTE:each event has own UID. As UID you can write any numbers or words;
+There should be no spaces (" ") after each line;
+Write DTSTART and DTEND in correct form: "yyyyMMdd'T'HHmmss'Z'" """
+
+evt= """BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example Corp.//CalDAV Client//EN
+BEGIN:VEVENT
+UID:lalalala123
+DTSTART:20210203T190000Z
+DTEND:20210203T223000Z
+location:Raum 29
+RRULE:FREQ=YEARLY
+SUMMARY:Verbrechen 
+END:VEVENT
+END:VCALENDAR
+"""
+my_event = a_calendar.save_event(evt)
