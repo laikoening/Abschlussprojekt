@@ -130,7 +130,7 @@ def check_vacancy(in_raum, in_datum, in_start, in_ende):
 # ------- Kalenderwoche ermitteln -------
 
 def kalenderwoche():
-    data = get_data()
+    data = get_data()                                                   # Diese Variable ist eine Liste
     liste = []
     for value in data:
         try:
@@ -147,7 +147,7 @@ def kalenderwoche():
 # ------- Suche nach Kalenderwoche  -------
 
 def search_KW(KW, jahr):
-    liste = kalenderwoche() 
+    liste = kalenderwoche()                                             # Diese Variable ist eine Liste
     if len(liste) == 0:
             return ["Keine Treffer!"]
     x = []
@@ -160,7 +160,7 @@ def search_KW(KW, jahr):
 # ------- Data für E-Mail (Wochentliche Meldung) -------
 
 def data_for_mail_body (KW, jahr, status):
-    data = search_KW(KW, jahr)
+    data = search_KW(KW, jahr)                                          # Diese Variable ist eine Liste
     liste = []
     for row in data:                                                    # Suche nach bestimmten Datensetz in Abhängigkeit vom Status
         if status == '':
@@ -184,7 +184,7 @@ def mail_body(KW, jahr, status):
         jahr = int(jahr)
     except ValueError:
         return ["Parameter inkorrekt!"]
-    data = data_for_mail_body(KW, jahr, status)
+    data = data_for_mail_body(KW, jahr, status)                         # Diese Variable ist eine Liste
     if len(data) == 0:
         return ["Keine Treffer!"]
     data.sort(key=sort_by_datetime)                                     # Das Datum in aufsteigender Reihenfolge sortieren 
@@ -199,7 +199,7 @@ def mail_body(KW, jahr, status):
     return liste
 
 def send_mail(KW, jahr, status, send):
-    x=mail_body(KW, jahr, status)
+    x=mail_body(KW, jahr, status)                                       # Diese Variable ist eine Liste
     # win32.client bietet Unterstützung für COM-Clients (z. B. Microsoft Excel, Outlook....). 
     # Die COM-Client-Unterstützung ermöglicht Python, andere COM-Objekte über ihre über ihre öffentlichen Schnittstellen bearbeiten.
     outlook = win32.Dispatch('outlook.application')        
@@ -212,21 +212,5 @@ def send_mail(KW, jahr, status, send):
     else:
         mail.Display(True)
 
-
-# ------- Liste mit gebuchten Räumen -------
-# def raum_body (KW,Jahr):
-#    text = suche_KW(KW,Jahr)
-#    i=0
-#    liste=[]
-#     while i<len(text):
-#        if text[i][0][9] == 'unbearbeitet':    
-#            body = "\n Raum: {1} , \n Datum : {2}, {3} \n Uhrzeit: {4} - {5} Uhr  ".format(*text[i][0])
-#            liste.append(body)
-#        else:
-#            err ="keine Treffer!"
-#            return(err)
-#         i=i+1    
-#     return(liste)
-#     print(liste)
 
 
