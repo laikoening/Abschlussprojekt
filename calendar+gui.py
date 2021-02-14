@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 import csv
 from datetime import datetime
 from icalendar import Calendar, Event
-from pytz import UTC # timezone
+from pytz import UTC #timezone
 import pytz
 
 def get_data_from_csv(csv_path):
@@ -12,7 +12,6 @@ def get_data_from_csv(csv_path):
        Raises: error message in case of incorrect format of the chosen file 
        Returns: list
     '''
-
     try:
         with open(rf"{csv_path}", encoding="utf8", errors='ignore') as file:
             reader = csv.reader(file, delimiter=';')
@@ -43,17 +42,14 @@ def get_values(csv_data):
 
     return list_with_dtstart_as_str, list_with_dtend_as_str, list_with_summaries,list_with_location
 
-
 def strings_to_datetime(list_with_dtstart_as_str,list_with_dtend_as_str):
     '''
        Function to convert string list with start dates and string list with end dates 
        into python datetime lists
-    '''
-    
+    '''  
     list_with_dtstart_as_datetime = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list_with_dtstart_as_str]
     list_with_dtend_as_datetime = [datetime.strptime(x,'%d.%m.%Y %H:%M') for x in list_with_dtend_as_str]
     return  list_with_dtstart_as_datetime, list_with_dtend_as_datetime
-
 
 def create_calendar_with_events(start_time, end_time, SUMMARIS,LOCATION):
     '''
