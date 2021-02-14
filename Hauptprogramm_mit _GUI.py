@@ -1,4 +1,5 @@
 #Imports
+<<<<<<< HEAD
 import PySimpleGUI as sg 
 
 from Dateihandle import search_data
@@ -14,6 +15,24 @@ from Dateihandle import get_highest_id
 from Dateihandle import mail_body
 from Dateihandle import text_for_mail_body
 from Dateihandle import check_vacancy
+=======
+import PySimpleGUI as sg
+from Dateihandle import *
+
+# from Dateihandle import search_data
+# from Dateihandle import get_data
+# from Dateihandle import save_data
+# from Dateihandle import delete_data
+# from Dateihandle import get_day
+# from Dateihandle import send_mail
+# from Dateihandle import show_mail
+# from Dateihandle import Kalenderwoche
+# from Dateihandle import suche_KW
+# from Dateihandle import get_highest_id
+# from Dateihandle import mail_body
+# from Dateihandle import text_for_mail_body
+# from Dateihandle import check_vacancy
+>>>>>>> 5d3c39071756e495cfae322f4252d65ca016d315
 
 
 import json
@@ -29,7 +48,7 @@ hid = get_highest_id() #Tab4: Holt höchste ID aus Buchungsliste
 choices =[] #Tab1: Liste der Listbox
 header = ["ID  Wochentag Datum  Start  Ende  Person  Produktion  Art  Status"] #Tab2: Header für Table
 mails = [] #Tab 2: Liste mit Buchungen 
-raum =[]  #Tab 3: Liste mit Buchungen (Räume)
+#raum =[]  #Tab 3: Liste mit Buchungen (Räume)
 
 #Design des Fenstern
 #sg.theme_previewer() #show all themes
@@ -43,14 +62,14 @@ tab1_layout = [[sg.Text('Geben Sie einen Suchbegriff ein:')],
  [sg.B('Alle Anzeigen'),sg.B('Eintrag Löschen'), sg.B('Liste Leeren'),sg.B('Infobox')]]
 
 #Tab2 - Wöchentliche Meldungen
-tab2_layout = [ [sg.Text('Hier können Sie die Buchungen nach Kalenderwoche und Jahr sehen:')],
+tab2_layout = [[sg.Text('Hier können Sie die Buchungen nach Kalenderwoche und Jahr sehen:')],
             [sg.Text('Kalenderwoche:', size=(18,0)), sg.Text('Jahr:', size=(10,0)), sg.Text('Status:', size=(10,0))],   
-            [sg.InputText(size=(20,10), key='KW'),sg.Drop(values = tab4["droplist_jahr"], key='Year', size=(10,10)) , sg.Drop(values = tab4["droplist_status"], key='status1', size=(10,10)), sg.Button('OK')],
+            [sg.InputText(size=(20,10), key='KW'), sg.Drop(values = tab4["droplist_jahr"], key='year', size=(10,10)) , sg.Drop(values = tab4["droplist_status"], key='status1', size=(10,10)), sg.Button('OK')],
             [sg.Listbox(mails,size=(100, 15),key='listbox2', enable_events=True)],
             #[sg.Text(key='e-mail body',size=(35, 10))], 
             [sg.Text('Sie können eine E-Mail mit der folgenden Buchungsliste senden' )],                         
-            [sg.Button('Send mail'),sg.Button('Edit mail'), sg.Button('Clear')],
-                ]  
+            [sg.Button('Send mail'),sg.Button('Edit mail'), sg.Button('Clear')]]
+
 #Tab3 - Raum Meldungen
 #tab3_layout = [ [sg.Text('Hier können Sie Räume mit dem Status "unbearbeitet" anschauen. ')],
 #            [sg.Text('Geben Sie bitte die Kalenderwoche und das Jahr ein. ')],
@@ -85,7 +104,7 @@ tab4_layout = [[sg.T('Hier können weitere Raumbuchungsanfragen erstellt werden.
 #layout = [[sg.TabGroup([[sg.Tab('Suche', tab1_layout, tooltip='Toll'), sg.Tab('Wöchentliche Meldungen', 
  #       tab2_layout), sg.Tab('Raum Meldungen', tab3_layout), sg.Tab('Eingabe', tab4_layout)]], tooltip='Geil')] ]
 
-# Gesamtes Layout und Fenster ohne Tab 3
+# -------- Gesamtes Layout und Fenster ohne Tab 3
 
 layout = [[sg.TabGroup([[sg.Tab('Suche', tab1_layout, tooltip='Toll'), sg.Tab('Wöchentliche Meldungen', 
         tab2_layout), sg.Tab('Eingabe', tab4_layout)]], tooltip='Geil')] ]
@@ -99,6 +118,7 @@ while True:
 
     event, values = window.read() 
     textInputs_such = values['Input']
+
     #Tab4: Values zur Ausgabe
     in_raum = values['raum']
     in_datum = values['datum']
@@ -110,12 +130,13 @@ while True:
     in_status = values['status']
 
     #Tab2: Values zur Ausgabe
-    K_W=values['KW']
-    Jahr=values['Year']
-    Status =['status1']
-    #Tab3: Values zur Ausgabe
- #   K_W1=values['KW_1']
- #   Jahr_1=values['Year1']
+    K_W = values['KW']
+    jahr = values['year']
+    status = values['status1']
+    
+#    Tab3: Values zur Ausgabe
+#    K_W1=values['KW_1']
+#    Jahr_1=values['Year1']
 
 #Tab1 - - - - -
     #Suchfunktion
@@ -146,30 +167,30 @@ while True:
     #Suche von Buchungen in Abhängigkeit von der  Kalenderwoche
     if event == 'OK':
         window.FindElement('listbox2').Update('')
-        mails = mail_body(K_W,Jahr,Status)
+        mails = mail_body(K_W, jahr, status)
         window.FindElement('listbox2').Update(mails)
     # Senden E-mail mit Buchungsliste (Abhängig von der  Kalenderwoche)
     if event == 'Send mail':
-        send_mail(K_W,Jahr,Status)
+        send_mail(K_W, jahr, status, send=True)
     # Möglichkeit, E-Mails vor dem Senden zu korrigieren 
     if event == 'Edit mail':
-        show_mail(K_W,Jahr,Status)
+        send_mail(K_W, jahr, status, send=False)
        # show_mail(header+K_W)
     #Leeren der Liste
     if event == 'Clear': 
         window.FindElement('listbox2').Update('')   
   
-#Tab3 - - - - - 
-    # Anzeige von gebuchten Räumen (Dautum + Zeit ) in Abhängigkeit  von der  Kalenderwoche
-   # if event == 'Übernehmen':
-    #    window.FindElement('listbox3').Update('')
-     #   raum = raum_body(K_W1,Jahr_1)
-      #  window.FindElement('listbox3').Update(raum)
-    #Leeren der Liste
-    #if event == 'Entfernen': 
-    #    window.FindElement('listbox3').Update('') 
-    #if event == 'mail': 
-    #    show_mail(K_W1,Jahr_1,'y') 
+# Tab3 - - - - - 
+#     Anzeige von gebuchten Räumen (Dautum + Zeit ) in Abhängigkeit  von der  Kalenderwoche
+#    if event == 'Übernehmen':
+#        window.FindElement('listbox3').Update('')
+#        raum = raum_body(K_W1,Jahr_1)
+#        window.FindElement('listbox3').Update(raum)
+#     Leeren der Liste
+#     if event == 'Entfernen': 
+#        window.FindElement('listbox3').Update('') 
+#     if event == 'mail': 
+#        show_mail(K_W1,Jahr_1,'y') 
 
 #Tab4 - - - - -  
     #Eingabe neuer Eintrag

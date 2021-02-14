@@ -129,114 +129,104 @@ def check_vacancy(in_raum, in_datum, in_start, in_ende):
 
 # ------- Kalenderwoche ermitteln -------
 
-def Kalenderwoche():
-    data=get_data()
-    liste=[]
+def kalenderwoche():
+    data = get_data()
+    liste = []
     for value in data:
         try:
-            day, month, year = (int(n) for n in value[3].split('.'))
-            X_Woche = datetime.date(year, month, day) 
-            week_number = X_Woche.isocalendar()[1] 
-            x=[week_number,year,value[0:10]]
+            day, month, year = (int(n) for n in value[3].split('.'))    # Aufteilung des Datums(int) in day, month, year
+            X_Woche = datetime.date(year, month, day)                   # Erstellung eines Datumsobjektes (datetime object)
+            week_number = X_Woche.isocalendar()[1]                      # Return Kalenderwoche 
+            x = [week_number, year, value]                              # Zusammenfassung der Kalenderwoche mit entsprechendem Jahr und Datensatz
             liste.append(x) 
         except:
-            print("keine Treffer!")          
-    return(liste)
-    #print(liste)
+            print("Fehlerhafter Eintrag!")                              # Fehlermeldung, wenn das Datum in .scv-Datei inkorrekt ist
+    
+    return liste
  
 # ------- Suche nach Kalenderwoche  -------
-def suche_KW(KW,Jahr):
-    KW = int(KW)
-    Jahr = int(Jahr)
-    liste=Kalenderwoche() 
-    x=[]
-    i=0
-    while i<len(liste):
-        if liste[i][0]==KW and liste[i][1]==Jahr:
-            x.append(liste[i][2:9])
-        i=i+1
-        if liste is None:
-            return("keine Treffer!")
-        if KW == None:
-            return("keine Treffer!")
-    return(x)
-    #print(x)
 
-# ------- Text für E-Mail (Wochentliche Meldung) -------
+def search_KW(KW, jahr):
+    liste = kalenderwoche() 
+    if len(liste) == 0:
+            return ["Keine Treffer!"]
+    x = []
+    for row in liste:                                                   # Suche nach bestimmten Datensetz in Abhängigkeit von der Kalenderwoche und Jahr 
+        if row[0] == KW and row[1] == jahr:
+            x.append(row[2])
 
-def text_for_mail_body (KW,Jahr,Status):
-    Status = str(Status)
-    text = suche_KW(KW,Jahr)
-    i=0
-    liste=[]
-    while i<len(text): 
-        if Status != None and Status==text[i][0][9]:
-            liste.append(text[i][0])
-        else: 
-            liste.append(text[i][0])
-        i=i+1
+    return x
 
-    return(liste)
+# ------- Data für E-Mail (Wochentliche Meldung) -------
+
+def data_for_mail_body (KW, jahr, status):
+    data = search_KW(KW, jahr)
+    liste = []
+    for row in data:                                                    # Suche nach bestimmten Datensetz in Abhängigkeit vom Status
+        if status == '':
+            liste.append(row)
+        elif status == row[9]:
+            liste.append(row)
+
+    return liste
   
+# ------- Datum Sortieren  -------
 
-def mail_body(KW,Jahr,Status):
-    text = text_for_mail_body(KW,Jahr,Status)
-    i=0
-    liste=[]
-    while i<len(text): 
-        #body = "\n Raum: {1} , \n Datum : {2}, {3} \n Uhrzeit: {4} - {5} Uhr  ".format(*text[i])
-        body = "\n #{2}, {3} \n {4} - {5} Uhr , {8} ".format(*text[i])
+def sort_by_datetime(row):                                              # Das Datum in aufsteigender Reihenfolge sortieren 
+    day, month, year = (int(n) for n in row[3].split('.'))              # Aufteilung des Datums(int) in day, month, year
+    return datetime.date(year, month, day)                              # Return datetime object
+
+# ------- Text für E-Mail ---------
+
+def mail_body(KW, jahr, status):
+    try:                                                                # Prüfen ob die Eigaben valid sind
+        KW = int(KW)                                                     
+        jahr = int(jahr)
+    except ValueError:
+        return ["Parameter inkorrekt!"]
+    data = data_for_mail_body(KW, jahr, status)
+    if len(data) == 0:
+        return ["Keine Treffer!"]
+    data.sort(key=sort_by_datetime)                                     # Das Datum in aufsteigender Reihenfolge sortieren 
+    liste = []
+    for row in data:
+
+        #body = "\n Raum: {1} , \n Datum : {2}, {3} \n Uhrzeit: {4} - {5} Uhr  ".format(*text[i])       # Text-Format_1 für mail body
+
+        body = "\n #{2}, {3} \n {4} - {5} Uhr , {8} ".format(*row)      # Text-Format_2 für mail body  
         liste.append(body)
-        i=i+1
-    return(liste)
 
+    return liste
 
-
-#------- Liste mit gebuchten Räumen -------
-#def raum_body (KW,Jahr):
- #   text = suche_KW(KW,Jahr)
-  #  i=0
-   # liste=[]
-    #while i<len(text):
-     #   if text[i][0][9] == 'unbearbeitet':    
-      #      body = "\n Raum: {1} , \n Datum : {2}, {3} \n Uhrzeit: {4} - {5} Uhr  ".format(*text[i][0])
-       #     liste.append(body)
-       # else:
-        #    err ="keine Treffer!"
-         #   return(err)
-        #i=i+1    
-    #return(liste)
-    #print(liste)
-
-#------- E-Mail mit Buchungsliste (Abhängig von der  Kalenderwoche) senden -------
-
-def send_mail(KW,Jahr,Status):
-    x=mail_body(KW,Jahr,Status) 
-    outlook = win32.Dispatch('outlook.application')
-    mail = outlook.CreateItem(0)                           # outlook MailItem == 0
+def send_mail(KW, jahr, status, send):
+    x=mail_body(KW, jahr, status)
+    # win32.client bietet Unterstützung für COM-Clients (z. B. Microsoft Excel, Outlook....). 
+    # Die COM-Client-Unterstützung ermöglicht Python, andere COM-Objekte über ihre über ihre öffentlichen Schnittstellen bearbeiten.
+    outlook = win32.Dispatch('outlook.application')        
+    mail = outlook.CreateItem(0)                                        # outlook MailItem == 0
     mail.To = 'olena.pokotilova@gmail.com'
     mail.Subject = 'Veranstaltungen für die nächsten Woche' 
-    mail.Body = " Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\n LG \n Kai Löning"
-    mail.Send()
-
-#------- E-Mail mit Buchungsliste (Abhängig von der  Kalenderwoche) vor dem Senden anschauen  -------
-def show_mail(KW,Jahr,Status):
-    x=mail_body(KW,Jahr,Status)
-    outlook = win32.Dispatch('outlook.application')
-    mail = outlook.CreateItem(0)                           # outlook MailItem == 0
-    mail.To = 'olena.pokotilova@gmail.com'
-    mail.Subject = 'Veranstaltungen für die nächsten Woche' 
-    mail.Body = " Sehr geeherte Frau Wußler,\n Unsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\n LG \n Kai Löning"  
-    mail.Display(True)                                   # show and edit mail
-
-    
+    mail.Body = "Sehr geeherte Frau Wußler,\nUnsere geplanten Veranstaltungen für die nächsten Woche sind die Folgenden: " + " ".join(x) + "\nLG \nKai Löning"
+    if send:
+        mail.Send()
+    else:
+        mail.Display(True)
 
 
+# ------- Liste mit gebuchten Räumen -------
+# def raum_body (KW,Jahr):
+#    text = suche_KW(KW,Jahr)
+#    i=0
+#    liste=[]
+#     while i<len(text):
+#        if text[i][0][9] == 'unbearbeitet':    
+#            body = "\n Raum: {1} , \n Datum : {2}, {3} \n Uhrzeit: {4} - {5} Uhr  ".format(*text[i][0])
+#            liste.append(body)
+#        else:
+#            err ="keine Treffer!"
+#            return(err)
+#         i=i+1    
+#     return(liste)
+#     print(liste)
 
-#while True:
- #   action= input('test')
- #   if action== 't':
-        #print(Kalenderwoche())
-        #suche_KW(43, 2020)
- #       mail_body2(43, 2020, "unbearbeitet")
-        #Kalenderwoche()
+
