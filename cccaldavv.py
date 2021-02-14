@@ -9,7 +9,7 @@ with open("data_file.json") as json_data_file:
 nextcloud = jdata["nextcloud"]
 
 '''After you have created the file and 
-uploaded it to the nextcloud, you can manage your events using the caldava library'''
+uploaded it to the nextcloud, you can manage your events using the CalDav library'''
 
 #JSON Aufruf
 URL = nextcloud["url"]
