@@ -2,16 +2,16 @@ from datetime import datetime
 import caldav 
 import json
 
-# ------- Konfigurationsdatei -------
+# Configuration file
 with open("data_file.json") as json_data_file:
     jdata = json.load(json_data_file)
-#Zugriff Konfigurationsdatei
-nextcloud = jdata["nextcloud"]
+
+nextcloud = jdata["nextcloud"] # Access configuration file
 
 '''After you have created the file and 
 uploaded it to the nextcloud, you can manage your events using the CalDav library'''
 
-#JSON Aufruf
+# json call
 URL = nextcloud["url"]
 UserName = nextcloud["username"]
 Password = nextcloud["password"]
@@ -29,7 +29,7 @@ if calendars:
 else: 
     print("your principal has no calendars") 
 
-# Access the calendar with events frm created ics file 
+# Access the calendar with events from created ics file 
 a_calendar = caldav.Calendar(client=client, url= 'https://nextcloud05.webo.cloud/remote.php/dav/calendars/anna.gafurova@htw-dresden.de/new/') 
 events_fetched = a_calendar.date_search(
     start=datetime(2021, 1, 1), end=datetime(2021, 3, 1), expand=True)
