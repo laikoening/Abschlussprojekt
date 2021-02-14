@@ -2,7 +2,7 @@ from datetime import datetime
 import caldav 
 
 '''After you have created the file and 
-uploaded it to the nextcloud, you can manage your events using the caldava library'''
+uploaded it to the nextcloud, you can manage your events using the CalDav library'''
 
 URL = "https://nextcloud05.webo.cloud/remote.php/dav" 
 UserName = "anna.gafurova@htw-dresden.de" 
