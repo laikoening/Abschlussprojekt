@@ -2,11 +2,11 @@ from datetime import datetime
 import caldav 
 
 '''After you have created an ics file and 
-uploaded it to the nextcloud, you can manage your events using the caldav library'''
+uploaded it to the nextcloud, you can manage your events using the CalDav library'''
 
-URL = "https://nextcloud05.webo.cloud/remote.php/dav" 
-UserName = "anna.gafurova@htw-dresden.de" 
-Password = "Tr" 
+URL = "https://nextcloud05.webo.cloud/remote.php/dav"
+UserName = "anna.gafurova@htw-dresden.de"
+Password = "qscwdv@!ABC7"
 
 #Setting up a caldav client object and a principal object
 client = caldav.DAVClient(url=URL, username=UserName, password=Password) 
@@ -21,7 +21,7 @@ if calendars:
 else: 
     print("your principal has no calendars") 
 
-# access the calendar with events from created ics file 
+#Access calendar events from created ics file 
 a_calendar = caldav.Calendar(client=client, url= 'https://nextcloud05.webo.cloud/remote.php/dav/calendars/anna.gafurova@htw-dresden.de/new/') 
 events_fetched = a_calendar.date_search(
     start=datetime(2021, 1, 1), end=datetime(2021, 3, 1), expand=True)
@@ -30,8 +30,9 @@ events_fetched = a_calendar.date_search(
 for y in range(len(events_fetched)):
     print (y,':', events_fetched[y].data)
 
-#Choose an event from listed events
+#Choose an event from listed events 
 event = events_fetched[0]
+
 #Modify event parameters using vobject module and save the event
 event.vobject_instance.vevent.summary.value = 'MOMO'
 event.vobject_instance.vevent.location.value  = 'BUEHNE'
