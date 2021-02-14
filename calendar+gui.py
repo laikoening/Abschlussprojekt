@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 import csv
 from datetime import datetime
 from icalendar import Calendar, Event
-from pytz import UTC #timezone
+from pytz import UTC # timezone
 import pytz
 
 def get_data_from_csv(csv_path):
@@ -35,9 +35,9 @@ def get_values(csv_data):
     list_with_summaries=[]
     list_with_location=[]
     for value in data:
-        list_with_dtstart_as_str.append(value[3]+" "+value[4])         #date string + start time string
-        list_with_dtend_as_str.append(value[3]+" "+value[5])           #date string + end time string
-        list_with_summaries.append(value[7]+','+value[6]+','+ value[8]) #list with names of plays, responsible people, status(rehearsals or performances) as summary list for calendar
+        list_with_dtstart_as_str.append(value[3]+" "+value[4])         # date string + start time string
+        list_with_dtend_as_str.append(value[3]+" "+value[5])           # date string + end time string
+        list_with_summaries.append(value[7]+','+value[6]+','+ value[8]) # list with names of plays, responsible people, status(rehearsals or performances) as summary list for calendar
         list_with_location.append(value[1]) 
 
     return list_with_dtstart_as_str, list_with_dtend_as_str, list_with_summaries,list_with_location
@@ -59,25 +59,25 @@ def create_calendar_with_events(start_time, end_time, SUMMARIS,LOCATION):
     '''
     cal = Calendar()   #Init the calendar
 
-#Some properties are required to be compliant:
+# Some properties are required to be compliant:
     cal.add('mothod','REQUEST')
     cal.add('prodid', '-//My calendar product//mxm.dk//')
     cal.add('version', '2.0')
 
-#Loop for creation events using lists with start dates, end dates, summaries and locations:
+# Loop for creation events using lists with start dates, end dates, summaries and locations:
     for y in range(len(start_time)) :    
 
-    #Convert each start time to start time with timezone
+    # Convert each start time to start time with timezone
         without_timezone = start_time[y]
         timezone = pytz.timezone("UTC")
         start_time_with_tz = timezone.localize(without_timezone)
 
-    #Convert end time to end time with timezone
+    # Convert end time to end time with timezone
         without_tz = end_time[y]
         timezone = pytz.timezone("UTC")
         end_time_with_tz = timezone.localize(without_tz)
 
-     #Create events
+     # Create events
         event = Event()      
         event.add('dtstart', start_time_with_tz)
         event["DTSTART"].params.clear()          
@@ -91,12 +91,12 @@ def create_calendar_with_events(start_time, end_time, SUMMARIS,LOCATION):
         event.add('priority', 5)
         cal.add_component(event)  #add events to the calendar
 
-    #Save events as ics file    
+    # Save events as ics file    
     f = open('buene_events.ics', 'wb')
     f.write(cal.to_ical())
     f.close()
 
-#Interface creation
+# Interface creation
 sg.theme_previewer() #show all themes
 sg.theme('DarkPurple7') #choose a theme    
 sg.SetOptions(element_padding=(10, 10))      
@@ -104,7 +104,7 @@ sg.SetOptions(element_padding=(10, 10))
 # Menu definition     
 menu_def = [['HELP', 'How to use the application']]  
 
-#Layout creation 
+# Layout creation 
 layout = [ [sg.Menu(menu_def, )],
            [sg.Text('Application to parse data from csv to Nextcloud')],
            [sg.T('Enter the path to the csv file'), sg.InputText(key='Input_CSV_path'), sg.FileBrowse(),
@@ -114,7 +114,7 @@ layout = [ [sg.Menu(menu_def, )],
          ]      
 window = sg.Window('CSV to Nextcloud parser', layout)
 
-#Loop to choose buttons  
+# Loop to choose buttons  
 while True:      
     event, values = window.read()   
     scvPath = values['Input_CSV_path'] 

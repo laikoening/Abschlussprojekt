@@ -8,7 +8,7 @@ URL = "https://nextcloud05.webo.cloud/remote.php/dav"
 UserName = "anna.gafurova@htw-dresden.de" 
 Password = "qscwdv@!ABC7" 
 
-#Setting up a caldav client object and a principal object
+# Setting up a caldav client object and a principal object
 client = caldav.DAVClient(url=URL, username=UserName, password=Password) 
 my_principal = client.principal() 
 
@@ -33,13 +33,13 @@ for y in range(len(events_fetched)):
 # Chose an event from listed events
 event = events_fetched[0]
 
-#Modify event parameters using vobject module and save the event
+# Modify event parameters using vobject module and save the event
 event.vobject_instance.vevent.summary.value = 'MOMO'
 event.vobject_instance.vevent.location.value  = 'BUEHNE'
 event.save()
 print(event.data)
 
-#Delete (for example) the second event from the calendar
+# Delete (for example) the second event from the calendar
 #event1 = events_fetched[2]
 #event1.delete()
 
