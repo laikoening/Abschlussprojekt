@@ -1,5 +1,6 @@
 #Imports
 import PySimpleGUI as sg 
+
 from Dateihandle import search_data
 from Dateihandle import get_data
 from Dateihandle import save_data
@@ -13,6 +14,7 @@ from Dateihandle import get_highest_id
 from Dateihandle import mail_body
 from Dateihandle import text_for_mail_body
 from Dateihandle import check_vacancy
+
 
 import json
 
