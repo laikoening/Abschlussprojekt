@@ -1,21 +1,4 @@
 #Imports
-<<<<<<< HEAD
-import PySimpleGUI as sg 
-
-from Dateihandle import search_data
-from Dateihandle import get_data
-from Dateihandle import save_data
-from Dateihandle import delete_data
-from Dateihandle import get_day
-from Dateihandle import send_mail
-from Dateihandle import show_mail
-from Dateihandle import Kalenderwoche
-from Dateihandle import suche_KW
-from Dateihandle import get_highest_id
-from Dateihandle import mail_body
-from Dateihandle import text_for_mail_body
-from Dateihandle import check_vacancy
-=======
 import PySimpleGUI as sg
 from Dateihandle import *
 
@@ -32,7 +15,6 @@ from Dateihandle import *
 # from Dateihandle import mail_body
 # from Dateihandle import text_for_mail_body
 # from Dateihandle import check_vacancy
->>>>>>> 5d3c39071756e495cfae322f4252d65ca016d315
 
 
 import json
@@ -198,7 +180,7 @@ while True:
         check = check_vacancy(in_raum, in_datum, in_start, in_ende)
         if check is not False : #Popup Warnung
             sg.popup("Raum schon belegt von:", check)
-        else: #Speicherung in der Daten Templiste
+        else: #Speicherung in der Daten Temp-liste
             wtag = get_day(in_datum)
             hid = hid + 1 #höchste ID +1
             anfrage.append([hid,in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])

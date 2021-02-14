@@ -1,12 +1,20 @@
 from datetime import datetime 
 import caldav 
+import json
+
+# ------- Konfigurationsdatei -------
+with open("data_file.json") as json_data_file:
+    jdata = json.load(json_data_file)
+#Zugriff Konfigurationsdatei
+nextcloud = jdata["nextcloud"]
 
 '''After you have created the file and 
 uploaded it to the nextcloud, you can manage your events using the caldava library'''
 
-URL = "https://nextcloud05.webo.cloud/remote.php/dav" 
-UserName = "anna.gafurova@htw-dresden.de" 
-Password = "qscwdv@!ABC7" 
+#JSON Aufruf
+URL = nextcloud["url"]
+UserName = nextcloud["username"]
+Password = nextcloud["password"]
 
 # Setting up a caldav client object and a principal object
 client = caldav.DAVClient(url=URL, username=UserName, password=Password) 
