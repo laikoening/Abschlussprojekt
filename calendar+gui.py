@@ -57,7 +57,7 @@ def create_calendar_with_events(start_time, end_time, SUMMARIS,LOCATION):
        Arg: datetime list of start dates, datetime list of end dates, 
        string list of summaries, string list of locations
     '''
-    cal = Calendar()   #Init the calendar
+    cal = Calendar()   # init the calendar
 
 # Some properties are required to be compliant:
     cal.add('mothod','REQUEST')
@@ -81,15 +81,15 @@ def create_calendar_with_events(start_time, end_time, SUMMARIS,LOCATION):
         event = Event()      
         event.add('dtstart', start_time_with_tz)
         event["DTSTART"].params.clear()          
-        event.add('dtend', end_time_with_tz)  #add start date of an event to calendar event 
+        event.add('dtend', end_time_with_tz)  # add start date of an event to calendar event 
         event["DTEND"].params.clear()
         event.add('dtstamp', start_time_with_tz)
         event["DTSTAMP"].params.clear()
         event['uid'] = str(y)                
-        event.add('summary', SUMMARIS[y])   #add event sumarry to calendar event
-        event.add('location', LOCATION[y])  #add event location to calendar event
+        event.add('summary', SUMMARIS[y])   # add event sumarry to calendar event
+        event.add('location', LOCATION[y])  # add event location to calendar event
         event.add('priority', 5)
-        cal.add_component(event)  #add events to the calendar
+        cal.add_component(event)  # add events to the calendar
 
     # Save events as ics file    
     f = open('buene_events.ics', 'wb')
@@ -121,7 +121,7 @@ while True:
 
     if event == 'ConfirmPath':
         csv_date = get_data_from_csv(scvPath)
-        print(csv_date)    #show read data from csv
+        print(csv_date)    # show read data from csv
 
     if event == sg.WIN_CLOSED or event == 'Exit':      
         break            
@@ -133,7 +133,7 @@ while True:
   
     # Process menu choices  
     if event == 'How to use the application':      
-        sg.popup("Step 1: For the application to work, click 'Browse' and select the requireed file",  #popup is a GUI equivalent of a print statement
+        sg.popup("Step 1: For the application to work, click 'Browse' and select the requireed file",  # popup is a GUI equivalent of a print statement
                  "Step 2: Click 'Confirm' if the path is correct",
                  "Step 3: Click  'Create isc file'",
                  "Step 4: Upload the created ics file to your Nextcloud calendar")      
