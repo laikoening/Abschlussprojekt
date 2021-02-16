@@ -10,6 +10,12 @@
         "droplist_jahr":["2019","2020","2021"],
         "droplist_jahr1":["2019","2020","2021"],
         "droplist_status":["", "anfragen", "angefragt", "ausstehend", "unbearbeitet"]
+    },
+
+    "nextcloud": {
+        "url": "https://nextcloud05.webo.cloud/remote.php/dav", 
+        "username": "anna.gafurova@htw-dresden.de",
+        "password": "qscwdv@!ABC7"
     }
 
 }

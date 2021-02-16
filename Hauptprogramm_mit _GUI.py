@@ -16,6 +16,7 @@ from Dateihandle import *
 # from Dateihandle import text_for_mail_body
 # from Dateihandle import check_vacancy
 
+
 import json
 
 #Konfigurationsdatei
@@ -179,7 +180,7 @@ while True:
         check = check_vacancy(in_raum, in_datum, in_start, in_ende)
         if check is not False : #Popup Warnung
             sg.popup("Raum schon belegt von:", check)
-        else: #Speicherung in der Daten Templiste
+        else: #Speicherung in der Daten Temp-liste
             wtag = get_day(in_datum)
             hid = hid + 1 #höchste ID +1
             anfrage.append([hid,in_raum, wtag, in_datum, in_start, in_ende, in_person, in_produkt, in_art, in_status])

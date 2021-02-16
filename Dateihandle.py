@@ -14,7 +14,7 @@ import win32com.client as win32
 # ------- Konfigurationsdatei -------
 with open("data_file.json") as json_data_file:
     jdata = json.load(json_data_file)
-#Zugriff Konfigurationsdatei
+#Zugriff auf Konfigurationsdatei
 settings = jdata["settings"]
 
 #-------Daten aus Datei laden-------
@@ -46,11 +46,11 @@ def save_data(data_sa):
     pfad  = settings["buchungspfad"]
     while not valid:
         try:
-            with open(pfad, mode='w', newline='') as csv_file:
+            with open(pfad, mode='w', newline='') as csv_file: #Liste in CVS-Datei speichern
                     writer = csv.writer(csv_file, delimiter=';', quoting=csv.QUOTE_MINIMAL)
                     writer.writerows(data_sa)
                     valid = True
-        except:
+        except: #exceptbehandlung
             print("Datei konnte nicht gefunden werden oder nicht gespeichert werden.")
             print("Bisheriger Pfad:", pfad)
             pfad = input("Bitte geben sie einen gültigen Pfad ein:")
@@ -58,14 +58,14 @@ def save_data(data_sa):
 # ------- Suche für die GUI -------
 def search_data(search):
 
-    data = get_data()          
+    data = get_data() #Daten aus CVS-Datei übernehmen
     i = 0
     liste = [] #Liste der gefunden passenden Buchungen
     while i < len(data): #Beginn Suchalgorythmus
         j=0
         while j < 9:
             if data[i][j] == search:
-                liste.append(data[i])
+                liste.append(data[i]) #Datensatz anhängen bei Treffer
             j = j +1
         i = i+1
     if not liste:
@@ -76,12 +76,12 @@ def search_data(search):
 
 #  ------- löschen von Daten -------
 def delete_data(delete):
-    data_de = get_data()
+    data_de = get_data() #Daten aus CVS-Datei übernehmen
     i = 0
     j = len(data_de)
     while i < j:
         if data_de[i][0] == delete:
-            data_de.remove(data_de[i])
+            data_de.remove(data_de[i]) #Datensatz löschen
             break
         i = i+1
     save_data(data_de) #Speicherung der Daten 
@@ -93,7 +93,7 @@ def get_day(tag):
 
 # -------- ID Erstellen -------
 def get_highest_id():
-    data_cr = get_data()
+    data_cr = get_data() #Daten aus CVS-Datei übernehmen
     i = 0
     id = 0
     while i < len(data_cr):
@@ -128,7 +128,6 @@ def check_vacancy(in_raum, in_datum, in_start, in_ende):
 #def show_warnings():
 
 # ------- Kalenderwoche ermitteln -------
-
 def kalenderwoche():
     data = get_data()                                                   # Diese Variable ist eine Liste
     liste = []
@@ -145,7 +144,6 @@ def kalenderwoche():
     return liste
  
 # ------- Suche nach Kalenderwoche  -------
-
 def search_KW(KW, jahr):
     liste = kalenderwoche()                                             # Diese Variable ist eine Liste
     if len(liste) == 0:
@@ -158,7 +156,6 @@ def search_KW(KW, jahr):
     return x
 
 # ------- Data für E-Mail (Wochentliche Meldung) -------
-
 def data_for_mail_body (KW, jahr, status):
     data = search_KW(KW, jahr)                                          # Diese Variable ist eine Liste
     liste = []
@@ -171,13 +168,11 @@ def data_for_mail_body (KW, jahr, status):
     return liste
   
 # ------- Datum Sortieren  -------
-
 def sort_by_datetime(row):                                              # Das Datum in aufsteigender Reihenfolge sortieren 
     day, month, year = (int(n) for n in row[3].split('.'))              # Aufteilung des Datums(int) in day, month, year
     return datetime.date(year, month, day)                              # Return datetime object
 
 # ------- Text für E-Mail ---------
-
 def mail_body(KW, jahr, status):
     try:                                                                # Prüfen ob die Eigaben valid sind
         KW = int(KW)                                                     
@@ -210,7 +205,11 @@ def send_mail(KW, jahr, status, send):
     if send:
         mail.Send()
     else:
+<<<<<<< HEAD
         mail.Display(True)
 
 
 
+=======
+        mail.Display(True)
+>>>>>>> 27cbfe5439874839599af2f21c10ba8dd6173f5f
