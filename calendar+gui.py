@@ -26,6 +26,7 @@ def get_values(csv_data):
     '''
        Function to extract data for calendar.
        Arg: list with data (booking data for rehearsals and performances) from csv file
+       Raises: error message in case of invalid indices in Python list
        Returns: string list with start dates of events, string list with end dates of events, 
        string list with summaries, string list with locations
     ''' 
@@ -44,6 +45,7 @@ def get_values(csv_data):
         return list_with_dtstart_as_str, list_with_dtend_as_str, list_with_summaries,list_with_location
     except: 
         print('You access invalid indices in your Python list')
+
 def strings_to_datetime(list_with_dtstart_as_str,list_with_dtend_as_str):
     '''
        Function to convert string list with start dates and string list with end dates 
