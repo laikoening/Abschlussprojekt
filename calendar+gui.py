@@ -34,14 +34,16 @@ def get_values(csv_data):
     list_with_dtend_as_str=[]
     list_with_summaries=[]
     list_with_location=[]
-    for value in data:
-        list_with_dtstart_as_str.append(value[3]+" "+value[4])         # date string + start time string
-        list_with_dtend_as_str.append(value[3]+" "+value[5])           # date string + end time string
-        list_with_summaries.append(value[7]+','+value[6]+','+ value[8]) # list with names of plays, responsible people, status(rehearsals or performances) as summary list for calendar
-        list_with_location.append(value[1]) 
+    try:
+        for value in data:
+            list_with_dtstart_as_str.append(value[3]+" "+value[4])         # date string + start time string
+            list_with_dtend_as_str.append(value[3]+" "+value[5])           # date string + end time string
+            list_with_summaries.append(value[7]+','+value[6]+','+ value[8]) # list with names of plays, responsible people, status(rehearsals or performances) as summary list for calendar
+            list_with_location.append(value[1]) 
 
-    return list_with_dtstart_as_str, list_with_dtend_as_str, list_with_summaries,list_with_location
-
+        return list_with_dtstart_as_str, list_with_dtend_as_str, list_with_summaries,list_with_location
+    except: 
+        print('You access invalid indices in your Python list')
 def strings_to_datetime(list_with_dtstart_as_str,list_with_dtend_as_str):
     '''
        Function to convert string list with start dates and string list with end dates 
@@ -97,7 +99,7 @@ def create_calendar_with_events(start_time, end_time, SUMMARIS,LOCATION):
     f.close()
 
 # Interface creation
-sg.theme_previewer() #show all themes
+#sg.theme_previewer() #show all themes
 sg.theme('DarkPurple7') #choose a theme    
 sg.SetOptions(element_padding=(10, 10))      
 
@@ -110,7 +112,7 @@ layout = [ [sg.Menu(menu_def, )],
            [sg.T('Enter the path to the csv file'), sg.InputText(key='Input_CSV_path'), sg.FileBrowse(),
             sg.B('Confirm', key='ConfirmPath')], 
            [sg.B('Create ics file')], 
-           [sg.Output(), sg.B('Exit')]
+           #[sg.Output(), sg.B('Exit')]
          ]      
 window = sg.Window('CSV to Nextcloud parser', layout)
 
