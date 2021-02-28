@@ -205,11 +205,7 @@ def send_mail(KW, jahr, status, send):
     if send:
         mail.Send()
     else:
-<<<<<<< HEAD
         mail.Display(True)
 
 
 
-=======
-        mail.Display(True)
->>>>>>> 27cbfe5439874839599af2f21c10ba8dd6173f5f
